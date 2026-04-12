@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.QuickKarigar" parent="Base.Theme.QuickKarigar" />
+
+    <style name="Theme.QuickKarigar.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

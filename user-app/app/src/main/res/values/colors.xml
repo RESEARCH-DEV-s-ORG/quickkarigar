@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#1A237E</color>
+    <color name="primary_feel">#8AB6BFFF</color>
+    <color name="secondary">#455A64</color>
+    <color name="secondary_darker_slate">#64748B</color>
+    <color name="tertiary">#5C1800</color>
+    <color name="neutral">#F8F9FA</color>
+
+
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_40">#66FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
 </resources>
