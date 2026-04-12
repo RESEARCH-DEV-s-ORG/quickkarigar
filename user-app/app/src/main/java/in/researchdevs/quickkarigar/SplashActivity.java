@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         logoCard = findViewById(R.id.logoCard);
 
-        // 🔥 Logo Animation (scale + fade)
+        // Logo Animation (scale + fade)
         logoCard.setScaleX(0.7f);
         logoCard.setScaleY(0.7f);
         logoCard.setAlpha(0f);
@@ -38,13 +38,13 @@ public class SplashActivity extends AppCompatActivity {
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
 
-        // 🔥 Progress Animation (0 → 100)
+        // Progress Animation (0 → 100)
         ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
         progressAnimator.setDuration(2200);
         progressAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         progressAnimator.start();
 
-        // 🔥 Move to MainActivity after animation
+        // Move to MainActivity after animation
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
