@@ -51,6 +51,16 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.googleButton).setOnClickListener(v -> signInWithGoogle());
         findViewById(R.id.phoneButton).setOnClickListener(v -> showPhoneDialog());
         findViewById(R.id.emailButton).setOnClickListener(v -> showEmailDialog());
+
+        findViewById(R.id.signUpActivityBtn).setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
+
+            overridePendingTransition(
+                    android.R.anim.fade_in,
+                    0
+            );
+        });
     }
 
     private void signInWithGoogle() {
