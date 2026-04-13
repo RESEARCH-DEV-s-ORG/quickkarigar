@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- HERO -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="340dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_blur"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/auth_bg"/>
+
+            <!-- Branding -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/logo_bg"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/ic_launcher"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="QuickKarigar"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A237E"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:maxWidth="240dp"
+                    android:text="Reliable home maintenance at your doorstep."
+                    android:textColor="#555"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- AUTH SHEET (IMPORTANT FIX HERE) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:layout_marginTop="-25dp"
+            android:background="@drawable/bg_auth_sheet"
+            android:elevation="10dp"
+            android:clipToPadding="false"
+            android:paddingBottom="40dp">
+
+            <!-- Welcome -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Welcome back"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Please sign in to continue your journey."
+                android:textSize="18sp"
+                android:textColor="#777"
+                android:layout_marginTop="4dp"/>
+
+            <!-- Google -->
+            <LinearLayout
+                android:id="@+id/googleButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_outline_round"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/google_ic"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Continue with Google"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Divider -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginVertical="16dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#DDD"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="OR"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#999"
+                    android:layout_marginHorizontal="10dp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#DDD"/>
+            </LinearLayout>
+
+            <!-- Phone -->
+            <LinearLayout
+                android:id="@+id/phoneButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/btn_primary_round"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:tint="@android:color/white"
+                    android:src="@drawable/phone_ic"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Login with Phone"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Email -->
+            <LinearLayout
+                android:id="@+id/emailButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/btn_light_round"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_email"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Login with Email"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Signup -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="New to QuickKarigar? "
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Sign Up"
+                    android:textSize="16sp"
+                    android:textColor="#1A237E"
+                    />
+            </LinearLayout>
+
+
+            <!-- Spacer pushes bottom content -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <!-- Bottom Icons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_secure"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="SECURE"
+                        android:textSize="10sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_fast"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="QUICK"
+                        android:textSize="10sp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

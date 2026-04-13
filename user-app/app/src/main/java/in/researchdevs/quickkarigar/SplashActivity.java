@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Delay + Network Check
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
 

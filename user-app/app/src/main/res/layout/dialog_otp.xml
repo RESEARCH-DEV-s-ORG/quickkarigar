@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/bg_auth_sheet">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="#DDD"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter OTP"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Code sent to "
+            android:textSize="16sp"
+            android:textColor="#777"
+            />
+
+        <TextView
+            android:id="@+id/phoneDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+91 XXXXXXXX"
+            android:textSize="16sp"
+            android:textColor="#777"
+            />
+    </LinearLayout>
+
+
+    <!-- OTP BOXES -->
+    <LinearLayout
+        android:id="@+id/otpContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+        <!-- 6 BOXES -->
+        <EditText
+            style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+
+    </LinearLayout>
+
+    <!-- Verify -->
+    <Button
+        android:id="@+id/btnVerify"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Verify"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_primary_round"/>
+
+    <!-- Resend -->
+    <TextView
+        android:id="@+id/resendOtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resend OTP"
+        android:textColor="#1A237E"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
