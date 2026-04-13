@@ -28,6 +28,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import in.researchdevs.quickkarigar.utility.PressableClickableSpan;
+
+
 public class SignUpActivity extends BaseActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -44,33 +47,35 @@ public class SignUpActivity extends BaseActivity {
 
         SpannableString spannable = new SpannableString(text);
 
+
         // Terms Click
-        ClickableSpan termsClick = new ClickableSpan() {
+        PressableClickableSpan termsClick = new PressableClickableSpan(
+                getResources().getColor(R.color.primary),
+                Color.GRAY
+        ) {
             @Override
             public void onClick(View widget) {
-                // TODO: Open Terms Activity / WebView
-            }
-
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false); // remove underline
+                Intent intent = new Intent(widget.getContext(), WebViewActivity.class);
+                intent.putExtra("url", "https://research-dev-s-org.github.io/quickkarigar/user-terms/");
+                intent.putExtra("title", "Terms of Service");
+                widget.getContext().startActivity(intent);
             }
         };
 
         // Privacy Click
-        ClickableSpan privacyClick = new ClickableSpan() {
+        PressableClickableSpan privacyClick = new PressableClickableSpan(
+                getResources().getColor(R.color.primary),
+                Color.GRAY
+        ) {
             @Override
             public void onClick(View widget) {
-                // TODO: Open Privacy Activity / WebView
-            }
-
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
+                Intent intent = new Intent(widget.getContext(), WebViewActivity.class);
+                intent.putExtra("url", "https://research-dev-s-org.github.io/quickkarigar/user-privacy/");
+                intent.putExtra("title", "Privacy Policy");
+                widget.getContext().startActivity(intent);
             }
         };
+
         // Apply spans (IMPORTANT indexes)
         spannable.setSpan(termsClick, 15, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannable.setSpan(privacyClick, 36, 50, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
