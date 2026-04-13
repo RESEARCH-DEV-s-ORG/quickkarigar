@@ -285,7 +285,6 @@ public class LoginActivity extends BaseActivity {
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
     }
-
     private void shakeView(View view) {
         view.animate()
                 .translationX(20).setDuration(50)
