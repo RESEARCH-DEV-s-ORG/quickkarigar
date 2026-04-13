@@ -1,9 +1,11 @@
 package in.researchdevs.quickkarigar;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -20,7 +22,17 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 public class LoginActivity extends BaseActivity {
+
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +40,39 @@ public class LoginActivity extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        findViewById(R.id.phoneButton).setOnClickListener(v -> showPhoneDialog());
 
-        // UPDATED: EMAIL CLICK
+        // Inside your onCreate or a setup method
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        findViewById(R.id.googleButton).setOnClickListener(v -> signInWithGoogle());
+        findViewById(R.id.phoneButton).setOnClickListener(v -> showPhoneDialog());
         findViewById(R.id.emailButton).setOnClickListener(v -> showEmailDialog());
+    }
+
+    private void signInWithGoogle() {
+        mGoogleSignInClient.signOut();
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                Toast.makeText(this, "Google Sign-In Success : " + account.getIdToken(), Toast.LENGTH_SHORT).show();
+            } catch (ApiException e) {
+                Log.e("G-AUTH", e.toString());
+                Toast.makeText(this, "Google Sign-In Failed: " + e.getStatusCode(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     // ================= PHONE FLOW =================
@@ -175,11 +216,9 @@ public class LoginActivity extends BaseActivity {
     // ================= COMMON OTP LOGIC =================
 
     private void setupOtpInputs(LinearLayout container) {
-
         for (int i = 0; i < container.getChildCount(); i++) {
             EditText current = (EditText) container.getChildAt(i);
             final int index = i;
-
             current.addTextChangedListener(new TextWatcher() {
                 @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                 @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
