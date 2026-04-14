@@ -140,6 +140,7 @@
                     app:tint="#9E9E9E"/>
 
                 <EditText
+                    android:id="@+id/nameInput"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -178,7 +179,7 @@
 
                 <!-- INPUT -->
                 <EditText
-                    android:id="@+id/emailInput"
+                    android:id="@+id/emailIdInput"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -235,7 +236,7 @@
 
                 <!-- PHONE INPUT -->
                 <EditText
-                    android:id="@+id/phoneInput"
+                    android:id="@+id/phoneNoInput"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -324,18 +325,39 @@
 
             <!-- BUTTON -->
             <LinearLayout
+                android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/btn_primary_round"
-                android:gravity="center">
+                android:gravity="center"
+                android:enabled="false"
+                android:alpha="0.5"
+                android:clickable="true"
+                android:focusable="true">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <!-- TEXT -->
+                    <TextView
+                        android:id="@+id/btnText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Create Account"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:layout_gravity="center"/>
+                    <!-- LOADER -->
+                    <ProgressBar
+                        android:id="@+id/btnLoaderCreate"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:visibility="gone"
+                        android:indeterminate="true"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@android:color/white"/>
+                </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Create Account"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"/>
             </LinearLayout>
 
             <!-- LOGIN -->

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -17,6 +16,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +24,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -44,6 +45,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
+import in.researchdevs.quickkarigar.data.repository.AuthCallback;
+import in.researchdevs.quickkarigar.data.repository.AuthRepository;
+
 
 public class LoginActivity extends BaseActivity {
 
@@ -51,6 +55,7 @@ public class LoginActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 1001;
     private String stateRequested;
     private String codeVerifier;
+    private AuthRepository authRepository;
 
     // Truecaller Launcher
     private ActivityResultLauncher<Intent> tcLauncher =
@@ -69,6 +74,7 @@ public class LoginActivity extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        authRepository = new AuthRepository(this);
 
         // Inside your onCreate or a setup method
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -92,7 +98,7 @@ public class LoginActivity extends BaseActivity {
         });
 
         TcSdkOptions options = new TcSdkOptions.Builder(this, tcOAuthCallback)
-                .buttonColor(getResources().getColor(R.color.primary))
+                .buttonColor(ContextCompat.getColor(this, R.color.primary))
                 .buttonTextColor(android.graphics.Color.WHITE)
                 .loginTextPrefix(TcSdkOptions.LOGIN_TEXT_PREFIX_TO_GET_STARTED)
                 .ctaText(TcSdkOptions.CTA_TEXT_CONTINUE)
@@ -123,9 +129,28 @@ public class LoginActivity extends BaseActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Toast.makeText(this, "Google Sign-In Success : " + account.getIdToken(), Toast.LENGTH_SHORT).show();
+
+                authRepository.loginWithGoogle(account.getIdToken(), new AuthCallback() {
+                    @Override
+                    public void onSuccess() {
+                        runOnUiThread(() -> {
+                            // Auth Success
+                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            // Navigate
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        });
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        runOnUiThread(() -> {
+                            // Auth Error
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
             } catch (ApiException e) {
-                Log.e("G-AUTH", e.toString());
                 Toast.makeText(this, "Google Sign-In Failed: " + e.getStatusCode(), Toast.LENGTH_LONG).show();
             }
         }
@@ -141,19 +166,28 @@ public class LoginActivity extends BaseActivity {
 
         EditText phoneInput = view.findViewById(R.id.phoneInput);
         Button btnContinue = view.findViewById(R.id.btnSendOtp);
+        ProgressBar progress = view.findViewById(R.id.progressSendOtp);
 
         animateDialog(view);
 
         phoneInput.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
             @Override
             public void afterTextChanged(Editable s) {
+                // Limit to 10 digits safely
                 if (s.length() > 10) {
+                    phoneInput.removeTextChangedListener(this);
                     phoneInput.setText(s.subSequence(0, 10));
                     phoneInput.setSelection(phoneInput.getText().length());
+                    phoneInput.addTextChangedListener(this);
+                    return;
                 }
+                // Validate phone
+                boolean valid = s.length() == 10;
+                // Enable / Disable button
+                btnContinue.setEnabled(valid);
+                btnContinue.setAlpha(valid ? 1f : 0.5f);
             }
         });
 
@@ -165,8 +199,32 @@ public class LoginActivity extends BaseActivity {
                 return;
             }
 
-            dialog.dismiss();
-            showOtpDialog(phone);
+            btnContinue.setEnabled(false);
+            btnContinue.setText("");
+            progress.setVisibility(View.VISIBLE);
+
+
+            authRepository.requestPhoneOtp(phone, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    // OTP Sent Successfully
+                    progress.setVisibility(View.GONE);
+                    btnContinue.setEnabled(true);
+                    btnContinue.setText("Continue");
+                    Toast.makeText(LoginActivity.this, "OTP Sent", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    showOtpDialog(phone);
+                }
+                @Override
+                public void onError(String message) {
+                    // Error Message
+                    progress.setVisibility(View.GONE);
+                    btnContinue.setEnabled(true);
+                    btnContinue.setText("Continue");
+
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         dialog.show();
@@ -190,6 +248,28 @@ public class LoginActivity extends BaseActivity {
 
         handleOtpButtonState(otpContainer, btnVerify);
 
+        ProgressBar progress = view.findViewById(R.id.btnLoader);
+        TextView resendOtp = view.findViewById(R.id.resendOtp);
+        startResendTimer(resendOtp, 60000);
+
+        resendOtp.setOnClickListener(v -> {
+            authRepository.requestPhoneOtp(phone, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, "OTP Resent", Toast.LENGTH_SHORT).show();
+                        startResendTimer(resendOtp, 60000);
+                    });
+                }
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() ->
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show()
+                    );
+                }
+            });
+        });
+
         btnVerify.setOnClickListener(v -> {
             String otp = getOtpFromBoxes(otpContainer);
 
@@ -199,8 +279,33 @@ public class LoginActivity extends BaseActivity {
                 return;
             }
 
-            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            btnVerify.setEnabled(false);
+            btnVerify.setText("");
+            progress.setVisibility(View.VISIBLE);
+
+            authRepository.verifyPhoneOtp(phone, otp, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+
+                    progress.setVisibility(View.GONE);
+                    btnVerify.setEnabled(true);
+                    btnVerify.setText("Verify");
+
+                    Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+                @Override
+                public void onError(String message) {
+                    progress.setVisibility(View.GONE);
+                    btnVerify.setEnabled(true);
+                    btnVerify.setText("Verify");
+
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    shakeView(otpContainer);
+                }
+            });
         });
 
         dialog.show();
@@ -217,6 +322,19 @@ public class LoginActivity extends BaseActivity {
 
         EditText emailInput = view.findViewById(R.id.emailInput);
         Button btnContinue = view.findViewById(R.id.btnSendEmailOtp);
+        ProgressBar progress = view.findViewById(R.id.progressEmailOtp);
+
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                boolean valid = Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches();
+                btnContinue.setEnabled(valid);
+                btnContinue.setAlpha(valid ? 1f : 0.5f);
+            }
+        });
 
         animateDialog(view);
 
@@ -228,8 +346,38 @@ public class LoginActivity extends BaseActivity {
                 return;
             }
 
-            dialog.dismiss();
-            showEmailOtpDialog(email);
+            btnContinue.setEnabled(false);
+            btnContinue.setText("");
+            progress.setVisibility(View.VISIBLE);
+
+
+            authRepository.requestEmailOtp(email, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        // STOP LOADING
+                        progress.setVisibility(View.GONE);
+                        btnContinue.setEnabled(true);
+                        btnContinue.setText("Continue");
+
+                        Toast.makeText(LoginActivity.this, "OTP Sent", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        showEmailOtpDialog(email);
+                    });
+                }
+
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> {
+                        // STOP LOADING
+                        progress.setVisibility(View.GONE);
+                        btnContinue.setEnabled(true);
+                        btnContinue.setText("Continue");
+
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
         });
 
         dialog.show();
@@ -245,14 +393,37 @@ public class LoginActivity extends BaseActivity {
         LinearLayout otpContainer = view.findViewById(R.id.otpContainer);
         Button btnVerify = view.findViewById(R.id.btnVerifyEmail);
         TextView emailDisplay = view.findViewById(R.id.emailDisplay);
+        ProgressBar progress = view.findViewById(R.id.progressVerifyEmail);
+        TextView resendOtp = view.findViewById(R.id.resendOtpEmail);
 
         emailDisplay.setText(email);
-
         setupOtpInputs(otpContainer);
         animateDialog(view);
 
-        handleOtpButtonState(otpContainer, btnVerify);
+        startResendTimer(resendOtp, 60000);
 
+        resendOtp.setOnClickListener(v -> {
+            resendOtp.setEnabled(false); // prevent spam
+            authRepository.requestEmailOtp(email, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, "OTP Resent", Toast.LENGTH_SHORT).show();
+                        // restart timer
+                        startResendTimer(resendOtp, 60000);
+                    });
+                }
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        resendOtp.setEnabled(true);
+                    });
+                }
+            });
+        });
+
+        handleOtpButtonState(otpContainer, btnVerify);
         btnVerify.setOnClickListener(v -> {
             String otp = getOtpFromBoxes(otpContainer);
 
@@ -262,8 +433,39 @@ public class LoginActivity extends BaseActivity {
                 return;
             }
 
-            Toast.makeText(this, "Email Login Successful", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            // START LOADING
+            btnVerify.setEnabled(false);
+            btnVerify.setText("");
+            progress.setVisibility(View.VISIBLE);
+
+            authRepository.verifyEmailOtp(email, otp, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        progress.setVisibility(View.GONE);
+                        btnVerify.setEnabled(true);
+                        btnVerify.setText("Verify");
+
+                        Toast.makeText(LoginActivity.this, "Email Login Success", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        // Navigate
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    });
+                }
+
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> {
+                        progress.setVisibility(View.GONE);
+                        btnVerify.setEnabled(true);
+                        btnVerify.setText("Verify");
+
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        shakeView(otpContainer);
+                    });
+                }
+            });
         });
 
         dialog.show();
@@ -390,17 +592,14 @@ public class LoginActivity extends BaseActivity {
                 );
     }
 
-
-
     // ================= TRUECALLER FLOW =================
 
     private void startTruecallerFlow() {
 
         if (!TcSdk.getInstance().isOAuthFlowUsable()) {
-            Toast.makeText(this, "Truecaller not available", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Truecaller not available", Toast.LENGTH_SHORT).show();
             return;
         }
-
         // STATE
         stateRequested = new BigInteger(130, new SecureRandom()).toString(32);
         TcSdk.getInstance().setOAuthState(stateRequested);
@@ -442,24 +641,36 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onSuccess(TcOAuthData data) {
-
             String authCode = data.getAuthorizationCode();
             String state = data.getState();
-
             if (!state.equals(stateRequested)) {
                 Toast.makeText(LoginActivity.this, "Security error", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Log.d("TC_SUCCESS", "AuthCode: " + authCode);
-            Toast.makeText(LoginActivity.this, "Truecaller Success", Toast.LENGTH_SHORT).show();
-
-            // 👉 send authCode to backend
+            authRepository.loginWithTruecaller(authCode, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                        // Navigate
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    });
+                }
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        // fallback to phone login
+                        showPhoneDialog();
+                    });
+                }
+            });
         }
 
         @Override
         public void onFailure(TcOAuthError error) {
-            Log.e("TC_ERROR", error.getErrorMessage());
             Toast.makeText(LoginActivity.this,
                     "TC Error: " + error.getErrorMessage(),
                     Toast.LENGTH_SHORT).show();
@@ -492,5 +703,20 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private void startResendTimer(TextView resendView, long durationMillis) {
+        resendView.setEnabled(false);
+        new android.os.CountDownTimer(durationMillis, 1000) {
+            public void onTick(long millisUntilFinished) {
+                long seconds = millisUntilFinished / 1000;
+                resendView.setText("Resend in " + seconds + "s");
+            }
+            public void onFinish() {
+                resendView.setText("Resend OTP");
+                resendView.setEnabled(true);
+            }
+
+        }.start();
     }
 }

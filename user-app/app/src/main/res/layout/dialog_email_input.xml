@@ -45,14 +45,31 @@
         android:textSize="16sp"/>
 
     <!-- Continue Button -->
-    <Button
-        android:id="@+id/btnSendEmailOtp"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Continue"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_primary_round"/>
+        android:layout_marginTop="20dp">
+
+        <!-- Button -->
+        <Button
+            android:id="@+id/btnSendEmailOtp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Continue"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_primary_round"
+            android:enabled="false"
+            android:alpha="0.5"/>
+
+        <!-- Loader -->
+        <ProgressBar
+            android:id="@+id/progressEmailOtp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"/>
+    </FrameLayout>
 
 </LinearLayout>

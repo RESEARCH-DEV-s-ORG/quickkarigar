@@ -57,15 +57,30 @@
     </LinearLayout>
 
     <!-- Verify Button -->
-    <Button
-        android:id="@+id/btnVerifyEmail"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Verify"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_primary_round"/>
+        android:layout_marginTop="20dp">
+
+        <!-- Verify Button -->
+        <Button
+            android:id="@+id/btnVerifyEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Verify"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_primary_round"/>
+
+        <!-- Loader -->
+        <ProgressBar
+            android:id="@+id/progressVerifyEmail"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"/>
+    </FrameLayout>
 
 
     <TextView
