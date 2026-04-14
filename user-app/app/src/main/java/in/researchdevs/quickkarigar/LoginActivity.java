@@ -21,6 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,10 +32,36 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+
+import com.truecaller.android.sdk.oAuth.TcOAuthCallback;
+import com.truecaller.android.sdk.oAuth.TcOAuthData;
+import com.truecaller.android.sdk.oAuth.TcOAuthError;
+import com.truecaller.android.sdk.oAuth.TcSdk;
+import com.truecaller.android.sdk.oAuth.TcSdkOptions;
+import com.truecaller.android.sdk.oAuth.CodeVerifierUtil;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+
+
 public class LoginActivity extends BaseActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1001;
+    private String stateRequested;
+    private String codeVerifier;
+
+    // Truecaller Launcher
+    private ActivityResultLauncher<Intent> tcLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> TcSdk.getInstance().onActivityResultObtained(
+                            LoginActivity.this,
+                            result.getResultCode(),
+                            result.getData()
+                    )
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +73,7 @@ public class LoginActivity extends BaseActivity {
         // Inside your onCreate or a setup method
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(getString(R.string.google_web_client_id))
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -61,6 +90,23 @@ public class LoginActivity extends BaseActivity {
                     0
             );
         });
+
+        TcSdkOptions options = new TcSdkOptions.Builder(this, tcOAuthCallback)
+                .buttonColor(getResources().getColor(R.color.primary))
+                .buttonTextColor(android.graphics.Color.WHITE)
+                .loginTextPrefix(TcSdkOptions.LOGIN_TEXT_PREFIX_TO_GET_STARTED)
+                .ctaText(TcSdkOptions.CTA_TEXT_CONTINUE)
+                .buttonShapeOptions(TcSdkOptions.BUTTON_SHAPE_ROUNDED)
+                .footerType(TcSdkOptions.FOOTER_TYPE_SKIP)
+                .sdkOptions(TcSdkOptions.OPTION_VERIFY_ONLY_TC_USERS)
+                .build();
+
+        // init in background
+        new Thread(() -> TcSdk.init(options)).start();
+
+        new android.os.Handler().postDelayed(() -> {
+            startTruecallerFlow();
+        }, 800); // 500–1000ms delay is safe
     }
 
     private void signInWithGoogle() {
@@ -310,7 +356,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     // ================= UI HELPERS =================
-
     private void setupBottomDialog(Dialog dialog) {
         Window window = dialog.getWindow();
         if (window != null) {
@@ -343,5 +388,109 @@ public class LoginActivity extends BaseActivity {
                                         view.animate().translationX(0).setDuration(50)
                                 )
                 );
+    }
+
+
+
+    // ================= TRUECALLER FLOW =================
+
+    private void startTruecallerFlow() {
+
+        if (!TcSdk.getInstance().isOAuthFlowUsable()) {
+            Toast.makeText(this, "Truecaller not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // STATE
+        stateRequested = new BigInteger(130, new SecureRandom()).toString(32);
+        TcSdk.getInstance().setOAuthState(stateRequested);
+
+        // SCOPES
+        TcSdk.getInstance().setOAuthScopes(new String[]{
+                "phone",
+                "openid"
+        });
+
+        // PKCE
+        codeVerifier = generateCodeVerifier();
+        String codeChallenge = generateCodeChallenge(codeVerifier);
+
+        if (codeChallenge != null) {
+            TcSdk.getInstance().setCodeChallenge(codeChallenge);
+        } else {
+            Toast.makeText(this, "Error initializing TC", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // START
+        TcSdk.getInstance().getAuthorizationCode(this, tcLauncher);
+    }
+
+    // ================= TRUECALLER CALLBACK =================
+
+    private TcOAuthCallback tcOAuthCallback = new TcOAuthCallback() {
+
+        @Override
+        public void onVerificationRequired(@Nullable TcOAuthError error) {
+            Toast.makeText(LoginActivity.this,
+                    "Manual verification required",
+                    Toast.LENGTH_SHORT).show();
+
+            // fallback
+            showPhoneDialog();
+        }
+
+        @Override
+        public void onSuccess(TcOAuthData data) {
+
+            String authCode = data.getAuthorizationCode();
+            String state = data.getState();
+
+            if (!state.equals(stateRequested)) {
+                Toast.makeText(LoginActivity.this, "Security error", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.d("TC_SUCCESS", "AuthCode: " + authCode);
+            Toast.makeText(LoginActivity.this, "Truecaller Success", Toast.LENGTH_SHORT).show();
+
+            // 👉 send authCode to backend
+        }
+
+        @Override
+        public void onFailure(TcOAuthError error) {
+            Log.e("TC_ERROR", error.getErrorMessage());
+            Toast.makeText(LoginActivity.this,
+                    "TC Error: " + error.getErrorMessage(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    // ================= PKCE =================
+
+    private String generateCodeVerifier() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] code = new byte[32];
+        secureRandom.nextBytes(code);
+
+        return android.util.Base64.encodeToString(code,
+                android.util.Base64.URL_SAFE |
+                        android.util.Base64.NO_WRAP |
+                        android.util.Base64.NO_PADDING);
+    }
+
+    private String generateCodeChallenge(String codeVerifier) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = digest.digest(codeVerifier.getBytes("US-ASCII"));
+
+            return android.util.Base64.encodeToString(bytes,
+                    android.util.Base64.URL_SAFE |
+                            android.util.Base64.NO_WRAP |
+                            android.util.Base64.NO_PADDING);
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

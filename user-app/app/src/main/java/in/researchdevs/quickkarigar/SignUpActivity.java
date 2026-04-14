@@ -1,5 +1,6 @@
 package in.researchdevs.quickkarigar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -55,10 +56,11 @@ public class SignUpActivity extends BaseActivity {
         ) {
             @Override
             public void onClick(View widget) {
-                Intent intent = new Intent(widget.getContext(), WebViewActivity.class);
-                intent.putExtra("url", "https://research-dev-s-org.github.io/quickkarigar/user-terms/");
-                intent.putExtra("title", "Terms of Service");
-                widget.getContext().startActivity(intent);
+                openWebPage(
+                        widget.getContext(),
+                        widget.getContext().getString(R.string.user_terms_url),
+                        "Terms of Service"
+                );
             }
         };
 
@@ -69,10 +71,11 @@ public class SignUpActivity extends BaseActivity {
         ) {
             @Override
             public void onClick(View widget) {
-                Intent intent = new Intent(widget.getContext(), WebViewActivity.class);
-                intent.putExtra("url", "https://research-dev-s-org.github.io/quickkarigar/user-privacy/");
-                intent.putExtra("title", "Privacy Policy");
-                widget.getContext().startActivity(intent);
+                openWebPage(
+                        widget.getContext(),
+                        widget.getContext().getString(R.string.user_privacy_url),
+                        "Privacy Policy"
+                );
             }
         };
 
@@ -118,13 +121,34 @@ public class SignUpActivity extends BaseActivity {
         // Inside your onCreate or a setup method
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(getString(R.string.google_web_client_id))
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         findViewById(R.id.googleSignUpButton).setOnClickListener(v -> signUpWithGoogle());
-    }
+        findViewById(R.id.privacyPolicyBtn).setOnClickListener(v -> {
+            openWebPage(
+                    v.getContext(),
+                    v.getContext().getString(R.string.user_terms_url),
+                    "Terms of Service"
+            );
+        });
+        findViewById(R.id.termsBtn).setOnClickListener(v -> {
+            openWebPage(
+                    v.getContext(),
+                    v.getContext().getString(R.string.user_privacy_url),
+                    "Privacy Policy"
+            );
+        });
 
+        findViewById(R.id.contactSupportBtn).setOnClickListener(v -> {
+            openWebPage(
+                    v.getContext(),
+                    v.getContext().getString(R.string.contact_url),
+                    "Contact Support"
+            );
+        });
+    }
     private void signUpWithGoogle() {
         mGoogleSignInClient.signOut();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -143,5 +167,12 @@ public class SignUpActivity extends BaseActivity {
                 Toast.makeText(this, "Google Sign-In Failed: " + e.getStatusCode(), Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public void openWebPage(Context context, String url, String title) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", title);
+        context.startActivity(intent);
     }
 }

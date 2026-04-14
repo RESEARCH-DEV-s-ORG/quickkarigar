@@ -30,6 +30,7 @@ android {
 
 dependencies {
     // Google Sign-In
+    implementation "com.truecaller.android.sdk:truecaller-sdk:3.2.0"
     implementation 'com.google.android.gms:play-services-auth:21.3.0'
     implementation libs.appcompat
     implementation libs.material

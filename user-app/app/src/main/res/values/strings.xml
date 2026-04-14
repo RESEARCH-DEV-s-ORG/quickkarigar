@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">QuickKarigar</string>
-    <string name="default_web_client_id">257200938816-ebtmmdq5anofnqclv4iullh81vnf5mpi.apps.googleusercontent.com</string>
+    <string name="google_web_client_id">257200938816-ebtmmdq5anofnqclv4iullh81vnf5mpi.apps.googleusercontent.com</string>
+    <string name="truecaller_client_id">ajrsevqzipiz-ampiqhqpeu8atptjyscwipgf9zvo1u</string>
+
+    <string name="user_terms_url">https://research-dev-s-org.github.io/quickkarigar/user-terms/</string>
+    <string name="user_privacy_url">https://research-dev-s-org.github.io/quickkarigar/user-privacy/</string>
+    <string name="contact_url">https://research-dev-s-org.github.io/quickkarigar/contact/</string>
 </resources>

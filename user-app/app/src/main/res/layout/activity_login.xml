@@ -228,6 +228,9 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     />
             </LinearLayout>
 
