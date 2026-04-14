@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/bg_auth_sheet">
+
+    <!-- HANDLE -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="#DDD"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- TITLE -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter OTP"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+    <!-- ================= PHONE SECTION ================= -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Code sent to phone"
+        android:textSize="14sp"
+        android:textColor="#777"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/phoneDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+91 XXXXXXXX"
+        android:textSize="16sp"
+        android:textColor="#1A237E"
+        android:textStyle="bold"/>
+
+    <!-- PHONE OTP -->
+    <LinearLayout
+        android:id="@+id/phoneOtpContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="12dp">
+
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+
+    </LinearLayout>
+
+    <!-- PHONE RESEND -->
+    <TextView
+        android:id="@+id/resendPhoneOtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resend Phone OTP"
+        android:textColor="@color/primary"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <!-- ================= EMAIL SECTION ================= -->
+
+    <TextView
+        android:id="@+id/emailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Code sent to email"
+        android:textSize="14sp"
+        android:textColor="#777"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/emailDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="example@email.com"
+        android:textSize="16sp"
+        android:textColor="#1A237E"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <!-- EMAIL OTP -->
+    <LinearLayout
+        android:id="@+id/emailOtpContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:visibility="gone">
+
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+        <EditText style="@style/OtpBoxStyle"/>
+
+    </LinearLayout>
+
+    <!-- EMAIL RESEND -->
+    <TextView
+        android:id="@+id/resendEmailOtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resend Email OTP"
+        android:textColor="@color/primary"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <!-- ================= VERIFY BUTTON ================= -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="20dp">
+        <!-- BUTTON -->
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Verify"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_primary_round"/>
+
+        <!-- LOADER -->
+        <ProgressBar
+            android:id="@+id/btnLoader"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</LinearLayout>

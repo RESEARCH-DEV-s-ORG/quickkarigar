@@ -132,34 +132,85 @@ public class AuthRepository {
             String name,
             String email,
             String phone,
-            String password,
             AuthCallback callback
     ) {
 
         handler.postDelayed(() -> {
 
+            // ===== NAME =====
             if (name == null || name.trim().isEmpty()) {
                 handleError("Enter full name", callback);
                 return;
             }
 
-            if (email == null || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                handleError("Enter valid email", callback);
-                return;
+            // ===== EMAIL (OPTIONAL) =====
+            if (email != null && !email.trim().isEmpty()) {
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    handleError("Enter valid email", callback);
+                    return;
+                }
             }
 
+            // ===== PHONE =====
             if (phone == null || phone.length() != 10) {
-                handleError("Enter valid phone number", callback);
+                handleError("Enter valid 10-digit phone number", callback);
                 return;
             }
 
-            if (password == null || password.length() < 6) {
-                handleError("Password must be at least 6 characters", callback);
+            // ===== SUCCESS =====
+            if (callback != null) callback.onSuccess();
+
+        }, 1500);
+    }
+
+    // ================= SIGNUP OTP (PHONE + OPTIONAL EMAIL) =================
+    public void verifySignupOtp(
+            String phone,
+            String phoneOtp,
+            String email,
+            String emailOtp,
+            AuthCallback callback
+    ) {
+
+        handler.postDelayed(() -> {
+
+            // ===== PHONE VALIDATION =====
+            if (phone == null || phone.length() != 10) {
+                handleError("Invalid phone number", callback);
                 return;
             }
 
-            // simulate API success
-            handleSuccess("signup_fake_token", callback);
+            if (phoneOtp == null || phoneOtp.length() != 6) {
+                handleError("Enter valid Phone OTP", callback);
+                return;
+            }
+
+            if (!phoneOtp.equals("123456")) {
+                handleError("Invalid Phone OTP", callback);
+                return;
+            }
+
+            // ===== EMAIL VALIDATION (ONLY IF PROVIDED) =====
+            boolean hasEmail = email != null &&
+                    !email.trim().isEmpty() &&
+                    Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
+            if (hasEmail) {
+
+                if (emailOtp == null || emailOtp.length() != 6) {
+                    handleError("Enter valid Email OTP", callback);
+                    return;
+                }
+
+                if (!emailOtp.equals("123456")) {
+                    handleError("Invalid Email OTP", callback);
+                    return;
+                }
+            }
+
+            // ===== SUCCESS =====
+            handleSuccess("signup_verified_token", callback);
 
         }, 1500);
     }

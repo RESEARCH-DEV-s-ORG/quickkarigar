@@ -1,31 +1,25 @@
 package in.researchdevs.quickkarigar;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextWatcher;
+import android.os.CountDownTimer;
+import android.text.*;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.*;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.*;
 
 import androidx.activity.EdgeToEdge;
 
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 
 import in.researchdevs.quickkarigar.data.repository.AuthCallback;
 import in.researchdevs.quickkarigar.data.repository.AuthRepository;
@@ -35,11 +29,8 @@ public class SignUpActivity extends BaseActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1001;
-
     private AuthRepository authRepository;
-
-    // UI
-    private EditText nameInput, emailInput, phoneInput, passwordInput;
+    private EditText nameInput, emailInput, phoneInput;
     private CheckBox termsCheckbox;
     private View btnSignUp;
     private TextView btnText;
@@ -58,52 +49,52 @@ public class SignUpActivity extends BaseActivity {
         setupClickListeners();
         setupGoogle();
         setupTermsText();
+
+
+        findViewById(R.id.privacyPolicyBtn).setOnClickListener(v -> {
+            openWebPage(v.getContext(), v.getContext().getString(R.string.user_privacy_url), "Privacy Policy");
+        });
+
+        findViewById(R.id.termsBtn).setOnClickListener(v -> {
+            openWebPage(v.getContext(), v.getContext().getString(R.string.user_terms_url), "Terms of Service");
+        });
+
+        findViewById(R.id.contactSupportBtn).setOnClickListener(v -> {
+            openWebPage(v.getContext(), v.getContext().getString(R.string.contact_url), "Contact Support");
+        });
     }
 
-    // ================= INIT =================
     private void initViews() {
         nameInput = findViewById(R.id.nameInput);
         emailInput = findViewById(R.id.emailIdInput);
         phoneInput = findViewById(R.id.phoneNoInput);
-        passwordInput = findViewById(R.id.passwordInput);
         termsCheckbox = findViewById(R.id.termsCheckbox);
 
         btnSignUp = findViewById(R.id.btnSignUp);
         btnText = findViewById(R.id.btnText);
         btnLoader = findViewById(R.id.btnLoaderCreate);
-
-        ImageView toggle = findViewById(R.id.togglePassword);
-
-        toggle.setOnClickListener(v -> togglePassword());
     }
 
     // ================= VALIDATION =================
     private void setupValidation() {
-
-        TextWatcher watcher = new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                validateForm();
-            }
-        };
+        TextWatcher watcher = new SimpleTextWatcher(this::validateForm);
 
         nameInput.addTextChangedListener(watcher);
         emailInput.addTextChangedListener(watcher);
         phoneInput.addTextChangedListener(watcher);
-        passwordInput.addTextChangedListener(watcher);
 
         termsCheckbox.setOnCheckedChangeListener((b, c) -> validateForm());
     }
 
     private void validateForm() {
+        String email = emailInput.getText().toString();
+
+        boolean emailValid = email.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
         boolean valid =
                 !nameInput.getText().toString().trim().isEmpty() &&
-                        Patterns.EMAIL_ADDRESS.matcher(emailInput.getText().toString()).matches() &&
+                        emailValid &&
                         phoneInput.getText().toString().length() == 10 &&
-                        passwordInput.getText().toString().length() >= 6 &&
                         termsCheckbox.isChecked();
 
         btnSignUp.setEnabled(valid);
@@ -115,56 +106,17 @@ public class SignUpActivity extends BaseActivity {
 
         btnSignUp.setOnClickListener(v -> {
 
-            if (!btnSignUp.isEnabled()) return;
-
             String name = nameInput.getText().toString().trim();
             String email = emailInput.getText().toString().trim();
             String phone = phoneInput.getText().toString().trim();
-            String password = passwordInput.getText().toString().trim();
 
-            // Validation (extra safety)
-            if (name.isEmpty()) {
-                nameInput.setError("Enter full name");
-                nameInput.requestFocus();
-                return;
-            }
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                emailInput.setError("Enter valid email");
-                emailInput.requestFocus();
-                return;
-            }
-
-            if (phone.length() != 10) {
-                phoneInput.setError("Enter valid number");
-                phoneInput.requestFocus();
-                return;
-            }
-
-            if (password.length() < 6) {
-                passwordInput.setError("Min 6 characters required");
-                passwordInput.requestFocus();
-                return;
-            }
-
-            if (!termsCheckbox.isChecked()) {
-                Toast.makeText(this, "Accept Terms & Privacy Policy", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // LOADING
             setLoading(true);
 
-            authRepository.signUp(name, email, phone, password, new AuthCallback() {
-
+            authRepository.signUp(name, email, phone, new AuthCallback() {
                 @Override
                 public void onSuccess() {
                     setLoading(false);
-
-                    Toast.makeText(SignUpActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-
-                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                    finish();
+                    showOtpLayout(phone, email);
                 }
 
                 @Override
@@ -175,66 +127,206 @@ public class SignUpActivity extends BaseActivity {
             });
         });
 
-        findViewById(R.id.loginActivityBtn).setOnClickListener(v -> {
-            startActivity(new Intent(this, LoginActivity.class));
-            overridePendingTransition(android.R.anim.fade_in, 0);
-        });
-
-        findViewById(R.id.contactSupportBtn).setOnClickListener(v -> {
-            openWebPage(this, getString(R.string.contact_url), "Contact Support");
-        });
-
-        findViewById(R.id.privacyPolicyBtn).setOnClickListener(v -> {
-            openWebPage(this, getString(R.string.user_privacy_url), "Privacy Policy");
-        });
-
-        findViewById(R.id.termsBtn).setOnClickListener(v -> {
-            openWebPage(this, getString(R.string.user_terms_url), "Terms of Service");
-        });
+        findViewById(R.id.loginActivityBtn).setOnClickListener(v ->
+                startActivity(new Intent(this, LoginActivity.class)));
     }
 
-    // ================= LOADING =================
-    private void setLoading(boolean isLoading) {
+    // ================= OTP =================
+    private void showOtpLayout(String phone, String email) {
 
-        if (isLoading) {
-            btnText.animate().alpha(0f).setDuration(150)
-                    .withEndAction(() -> btnText.setVisibility(View.INVISIBLE));
+        Dialog dialog = new Dialog(this, R.style.BottomDialogTheme);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_otp_verification, null);
+        dialog.setContentView(view);
 
-            btnLoader.setScaleX(0.7f);
-            btnLoader.setScaleY(0.7f);
-            btnLoader.setAlpha(0f);
-            btnLoader.setVisibility(View.VISIBLE);
+        setupBottomDialog(dialog);
 
-            btnLoader.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(200).start();
+        LinearLayout phoneOtp = view.findViewById(R.id.phoneOtpContainer);
+        LinearLayout emailOtp = view.findViewById(R.id.emailOtpContainer);
+        TextView phoneDisplay = view.findViewById(R.id.phoneDisplay);
+        TextView emailDisplay = view.findViewById(R.id.emailDisplay);
+        TextView emailLabel = view.findViewById(R.id.emailLabel);
+        TextView resendPhone = view.findViewById(R.id.resendPhoneOtp);
+        TextView resendEmail = view.findViewById(R.id.resendEmailOtp);
 
-            btnSignUp.setEnabled(false);
-            btnSignUp.setAlpha(0.7f);
+        Button btnVerify = view.findViewById(R.id.btnVerify);
+        ProgressBar loader = view.findViewById(R.id.btnLoader);
 
-        } else {
-            btnLoader.animate().alpha(0f).scaleX(0.7f).scaleY(0.7f)
-                    .setDuration(150)
-                    .withEndAction(() -> btnLoader.setVisibility(View.GONE));
+        phoneDisplay.setText("+91 " + phone);
 
-            btnText.setAlpha(0f);
-            btnText.setVisibility(View.VISIBLE);
-            btnText.animate().alpha(1f).setDuration(200).start();
+        boolean hasEmail = email != null && !email.isEmpty();
 
-            btnSignUp.setEnabled(true);
-            btnSignUp.setAlpha(1f);
+        setupOtpInputs(phoneOtp);
+        startResendTimer(resendPhone);
+
+        if (hasEmail) {
+            emailLabel.setVisibility(View.VISIBLE);
+            emailDisplay.setVisibility(View.VISIBLE);
+            emailOtp.setVisibility(View.VISIBLE);
+            resendEmail.setVisibility(View.VISIBLE);
+
+            emailDisplay.setText(email);
+            setupOtpInputs(emailOtp);
+            startResendTimer(resendEmail);
+        }
+
+        handleOtpButtonState(phoneOtp, emailOtp, hasEmail, btnVerify);
+
+        btnVerify.setOnClickListener(v -> {
+
+            String phoneOtpVal = getOtp(phoneOtp);
+            String emailOtpVal = hasEmail ? getOtp(emailOtp) : null;
+
+            if (phoneOtpVal.length() != 6) {
+                shakeView(phoneOtp);
+                return;
+            }
+
+            if (hasEmail && emailOtpVal.length() != 6) {
+                shakeView(emailOtp);
+                return;
+            }
+
+            loader.setVisibility(View.VISIBLE);
+            btnVerify.setText("");
+            btnVerify.setEnabled(false);
+
+            authRepository.verifySignupOtp(phone, phoneOtpVal, email, emailOtpVal, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    dialog.dismiss();
+                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onError(String message) {
+                    loader.setVisibility(View.GONE);
+                    btnVerify.setText("Verify");
+                    btnVerify.setEnabled(true);
+
+                    Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                    if (message.toLowerCase().contains("email")) {
+                        shakeView(emailOtp);
+                    } else {
+                        shakeView(phoneOtp);
+                    }
+                }
+            });
+        });
+
+        animateDialog(view);
+        dialog.show();
+    }
+
+    // ================= OTP INPUT =================
+    private void setupOtpInputs(LinearLayout container) {
+
+        for (int i = 0; i < container.getChildCount(); i++) {
+
+            EditText box = (EditText) container.getChildAt(i);
+            int index = i;
+
+            box.addTextChangedListener(new SimpleTextWatcher(() -> {
+                if (box.getText().length() == 1 && index < container.getChildCount() - 1) {
+                    container.getChildAt(index + 1).requestFocus();
+                }
+            }));
+
+            box.setOnKeyListener((v, keyCode, event) -> {
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                    if (box.getText().toString().isEmpty() && index > 0) {
+                        EditText prev = (EditText) container.getChildAt(index - 1);
+                        prev.requestFocus();
+                        prev.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            });
         }
     }
 
-    // ================= PASSWORD =================
-    private void togglePassword() {
-        if (passwordInput.getInputType() ==
-                (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+    private void handleOtpButtonState(LinearLayout phoneOtp, LinearLayout emailOtp, boolean hasEmail, Button btn) {
 
-            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        btn.setEnabled(false);
+        btn.setAlpha(0.5f);
 
-        } else {
-            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        TextWatcher watcher = new SimpleTextWatcher(() -> {
+
+            boolean phoneDone = getOtp(phoneOtp).length() == 6;
+            boolean emailDone = !hasEmail || getOtp(emailOtp).length() == 6;
+
+            if (phoneDone && emailDone) {
+                btn.setEnabled(true);
+                btn.setAlpha(1f);
+            } else {
+                btn.setEnabled(false);
+                btn.setAlpha(0.5f);
+            }
+        });
+
+        for (int i = 0; i < phoneOtp.getChildCount(); i++)
+            ((EditText) phoneOtp.getChildAt(i)).addTextChangedListener(watcher);
+
+        if (hasEmail) {
+            for (int i = 0; i < emailOtp.getChildCount(); i++)
+                ((EditText) emailOtp.getChildAt(i)).addTextChangedListener(watcher);
         }
-        passwordInput.setSelection(passwordInput.getText().length());
+    }
+
+    private String getOtp(LinearLayout container) {
+        StringBuilder otp = new StringBuilder();
+        for (int i = 0; i < container.getChildCount(); i++) {
+            otp.append(((EditText) container.getChildAt(i)).getText().toString());
+        }
+        return otp.toString();
+    }
+
+    private void shakeView(View view) {
+        view.animate().translationX(20).setDuration(50)
+                .withEndAction(() ->
+                        view.animate().translationX(-20).setDuration(50)
+                                .withEndAction(() ->
+                                        view.animate().translationX(0).setDuration(50)
+                                )
+                );
+    }
+
+    private void startResendTimer(TextView view) {
+        view.setEnabled(false);
+
+        new CountDownTimer(60000, 1000) {
+            public void onTick(long millis) {
+                view.setText("Resend in " + millis / 1000 + "s");
+            }
+
+            public void onFinish() {
+                view.setEnabled(true);
+                view.setText("Resend OTP");
+            }
+        }.start();
+    }
+
+    // ================= UI =================
+    private void setupBottomDialog(Dialog dialog) {
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setGravity(Gravity.BOTTOM);
+        }
+    }
+
+    private void animateDialog(View view) {
+        view.setTranslationY(300);
+        view.animate().translationY(0).setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+    }
+
+    private void setLoading(boolean loading) {
+        btnLoader.setVisibility(loading ? View.VISIBLE : View.GONE);
+        btnText.setVisibility(loading ? View.INVISIBLE : View.VISIBLE);
     }
 
     // ================= GOOGLE =================
@@ -246,43 +338,42 @@ public class SignUpActivity extends BaseActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        findViewById(R.id.googleSignUpButton).setOnClickListener(v -> {
-            mGoogleSignInClient.signOut();
-            startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
-        });
+        findViewById(R.id.googleSignUpButton).setOnClickListener(v ->
+                startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RC_SIGN_IN) {
             try {
                 GoogleSignInAccount account = GoogleSignIn
                         .getSignedInAccountFromIntent(data)
                         .getResult(ApiException.class);
-
                 authRepository.loginWithGoogle(account.getIdToken(), new AuthCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(SignUpActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                    @Override public void onSuccess() {
                         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                         finish();
                     }
-
-                    @Override
-                    public void onError(String message) {
+                    @Override public void onError(String message) {
                         Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
-
             } catch (ApiException e) {
-                Toast.makeText(this, "Google Sign-In Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Google Failed", Toast.LENGTH_SHORT).show();
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // ================= TERMS =================
+    // ================= HELPER =================
+    private static class SimpleTextWatcher implements TextWatcher {
+        Runnable after;
+        SimpleTextWatcher(Runnable after) { this.after = after; }
+        public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+        public void onTextChanged(CharSequence s, int st, int b, int c) {}
+        public void afterTextChanged(Editable s) { after.run(); }
+    }
+
     private void setupTermsText() {
         TextView textView = findViewById(R.id.termsText);
         String text = "I agree to the Terms of Service and Privacy Policy";
@@ -316,11 +407,11 @@ public class SignUpActivity extends BaseActivity {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setHighlightColor(Color.TRANSPARENT);
     }
-    // ================= WEB =================
-    public void openWebPage(Context context, String url, String title) {
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra("url", url);
-        intent.putExtra("title", title);
-        context.startActivity(intent);
+
+    public void openWebPage(Context c, String url, String title) {
+        Intent i = new Intent(c, WebViewActivity.class);
+        i.putExtra("url", url);
+        i.putExtra("title", title);
+        c.startActivity(i);
     }
 }

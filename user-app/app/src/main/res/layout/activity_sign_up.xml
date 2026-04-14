@@ -183,7 +183,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:hint="name@company.com"
+                    android:hint="name@company.com (Optional)"
                     android:textSize="16sp"
                     android:background="@null"
                     android:paddingStart="10dp"
@@ -250,54 +250,6 @@
                     android:importantForAutofill="yes"
                     android:autofillHints="phone"
                     android:digits="0123456789"/>
-            </LinearLayout>
-
-            <!-- PASSWORD TITLE -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PASSWORD"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="#9E9E9E"
-                android:layout_marginBottom="4dp"/>
-
-            <!-- PASSWORD FIELD -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
-                android:background="@drawable/edit_text_bg"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="12dp">
-
-                <!-- LOCK ICON -->
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_lock"
-                    app:tint="#9E9E9E"/>
-
-                <!-- PASSWORD INPUT -->
-                <EditText
-                    android:id="@+id/passwordInput"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="Password"
-                    android:textSize="16sp"
-                    android:background="@null"
-                    android:paddingStart="10dp"
-                    android:inputType="textPassword"/>
-
-                <!-- EYE ICON -->
-                <ImageView
-                    android:id="@+id/togglePassword"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_eye"
-                    app:tint="#9E9E9E"/>
             </LinearLayout>
 
             <!-- TERMS -->
@@ -462,4 +414,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 </androidx.core.widget.NestedScrollView>
