@@ -158,6 +158,21 @@ public class SignUpActivity extends BaseActivity {
         setupOtpInputs(phoneOtp);
         startResendTimer(resendPhone);
 
+        resendPhone.setOnClickListener(v -> {
+            authRepository.requestPhoneOtp(phone, new AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(SignUpActivity.this, "Phone OTP Resent", Toast.LENGTH_SHORT).show();
+                    // restart timer
+                    startResendTimer(resendPhone);
+                }
+                @Override
+                public void onError(String message) {
+                    Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
         if (hasEmail) {
             emailLabel.setVisibility(View.VISIBLE);
             emailDisplay.setVisibility(View.VISIBLE);
@@ -167,6 +182,22 @@ public class SignUpActivity extends BaseActivity {
             emailDisplay.setText(email);
             setupOtpInputs(emailOtp);
             startResendTimer(resendEmail);
+
+
+            resendEmail.setOnClickListener(v -> {
+                authRepository.requestEmailOtp(email, new AuthCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(SignUpActivity.this, "Email OTP Resent", Toast.LENGTH_SHORT).show();
+                        // restart timer
+                        startResendTimer(resendEmail);
+                    }
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         }
 
         handleOtpButtonState(phoneOtp, emailOtp, hasEmail, btnVerify);
@@ -296,19 +327,21 @@ public class SignUpActivity extends BaseActivity {
 
     private void startResendTimer(TextView view) {
         view.setEnabled(false);
-
         new CountDownTimer(60000, 1000) {
-            public void onTick(long millis) {
-                view.setText("Resend in " + millis / 1000 + "s");
+            public void onTick(long millisUntilFinished) {
+                view.setText("Resend in " + millisUntilFinished / 1000 + "s");
             }
-
             public void onFinish() {
                 view.setEnabled(true);
-                view.setText("Resend OTP");
+
+                if (view.getId() == R.id.resendPhoneOtp) {
+                    view.setText("Resend Phone OTP");
+                } else {
+                    view.setText("Resend Email OTP");
+                }
             }
         }.start();
     }
-
     // ================= UI =================
     private void setupBottomDialog(Dialog dialog) {
         Window window = dialog.getWindow();
