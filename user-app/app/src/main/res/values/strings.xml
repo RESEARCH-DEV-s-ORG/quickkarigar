@@ -6,4 +6,6 @@
     <string name="user_terms_url">https://research-dev-s-org.github.io/quickkarigar/user-terms/</string>
     <string name="user_privacy_url">https://research-dev-s-org.github.io/quickkarigar/user-privacy/</string>
     <string name="contact_url">https://research-dev-s-org.github.io/quickkarigar/contact/</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

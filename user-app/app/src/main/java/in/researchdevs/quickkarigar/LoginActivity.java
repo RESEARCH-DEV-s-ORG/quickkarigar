@@ -74,6 +74,14 @@ public class LoginActivity extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        View root = findViewById(R.id.login_screen);
+        root.setOnApplyWindowInsetsListener((v, insets) -> {
+            int top = insets.getSystemWindowInsetTop();
+            int bottom = insets.getSystemWindowInsetBottom();
+            v.setPadding(0, top, 0, bottom);
+            return insets;
+        });
+
         authRepository = new AuthRepository(this);
 
         // Inside your onCreate or a setup method

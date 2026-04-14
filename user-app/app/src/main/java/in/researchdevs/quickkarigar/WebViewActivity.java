@@ -24,6 +24,18 @@ public class WebViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+
+
+        View root = findViewById(R.id.webview_screen);
+
+        root.setOnApplyWindowInsetsListener((v, insets) -> {
+            int top = insets.getSystemWindowInsetTop();
+            int bottom = insets.getSystemWindowInsetBottom();
+
+            v.setPadding(0, top, 0, bottom);
+            return insets;
+        });
+
         webView = findViewById(R.id.webView);
         progressBar = findViewById(R.id.progressBar);
         title = findViewById(R.id.pageTitle);

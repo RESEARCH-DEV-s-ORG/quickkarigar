@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomNavLayout"
+    android:layout_width="match_parent"
+    android:layout_height="74dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@drawable/bg_bottom_nav"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <!-- HOME -->
+    <LinearLayout
+        android:id="@+id/navHome"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="4dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:background="@drawable/nav_selector">
+
+        <ImageView
+            android:id="@+id/iconHome"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_home"
+            app:tint="@color/nav_text_color"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textSize="11sp"
+            android:textColor="@color/nav_text_color"/>
+    </LinearLayout>
+
+    <!-- BOOKINGS -->
+    <LinearLayout
+        android:id="@+id/navBookings"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="4dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:background="@drawable/nav_selector">
+
+        <ImageView
+            android:id="@+id/iconBookings"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_booking"
+            app:tint="@color/nav_text_color"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bookings"
+            android:textSize="11sp"
+            android:textColor="@color/nav_text_color"/>
+    </LinearLayout>
+
+    <!-- MESSAGES -->
+    <LinearLayout
+        android:id="@+id/navMessages"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="4dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:background="@drawable/nav_selector">
+
+        <ImageView
+            android:id="@+id/iconMessages"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_message"
+            app:tint="@color/nav_text_color"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Messages"
+            android:textSize="11sp"
+            android:textColor="@color/nav_text_color"/>
+    </LinearLayout>
+
+    <!-- PROFILE -->
+    <LinearLayout
+        android:id="@+id/navProfile"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="4dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:background="@drawable/nav_selector">
+
+        <ImageView
+            android:id="@+id/iconProfile"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_user"
+            app:tint="@color/nav_text_color"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="11sp"
+            android:textColor="@color/nav_text_color"/>
+    </LinearLayout>
+
+</LinearLayout>

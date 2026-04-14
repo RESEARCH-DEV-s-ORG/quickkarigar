@@ -42,6 +42,15 @@ public class SignUpActivity extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
 
+        View root = findViewById(R.id.signup_screen);
+        root.setOnApplyWindowInsetsListener((v, insets) -> {
+            int top = insets.getSystemWindowInsetTop();
+            int bottom = insets.getSystemWindowInsetBottom();
+
+            v.setPadding(0, top, 0, bottom);
+            return insets;
+        });
+
         authRepository = new AuthRepository(this);
 
         initViews();
