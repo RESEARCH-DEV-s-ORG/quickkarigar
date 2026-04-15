@@ -98,6 +98,7 @@ public class LoginActivity extends BaseActivity {
         findViewById(R.id.signUpActivityBtn).setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
+            finish();
 
             overridePendingTransition(
                     android.R.anim.fade_in,

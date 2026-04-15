@@ -136,8 +136,14 @@ public class SignUpActivity extends BaseActivity {
             });
         });
 
-        findViewById(R.id.loginActivityBtn).setOnClickListener(v ->
-                startActivity(new Intent(this, LoginActivity.class)));
+        findViewById(R.id.loginActivityBtn).setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            overridePendingTransition(
+                    android.R.anim.fade_in,
+                    0
+            );
+        });
     }
 
     // ================= OTP =================

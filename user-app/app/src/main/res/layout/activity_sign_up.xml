@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:text="OR REGISTER VIA EMAIL"
+                    android:text="OR CONTINUE WITH DETAILS"
                     android:textColor="#999"
                     android:layout_gravity="center"
                     android:layout_marginVertical="16dp"/>
