@@ -1,0 +1,42 @@
+<!-- item_service_large.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bg_service_large">
+
+    <ImageView
+        android:id="@+id/itemServiceIcon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:tint="#C0BFEF"
+        android:padding="5dp"
+        android:src="@drawable/ic_user"
+        android:background="@drawable/bg_icon_large"/>
+
+    <!-- Spacer pushes content down -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/itemServiceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electrician"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/itemServiceSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="48 EXPERTS"
+        android:textColor="#C7C9FF"
+        android:textSize="12sp"/>
+
+</LinearLayout>

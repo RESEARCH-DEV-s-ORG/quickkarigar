@@ -39,7 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home"
-            android:textSize="11sp"
+            android:textSize="13sp"
+            android:textStyle="bold"
             android:textColor="@color/nav_text_color"/>
     </LinearLayout>
 
@@ -70,7 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bookings"
-            android:textSize="11sp"
+            android:textSize="13sp"
+            android:textStyle="bold"
             android:textColor="@color/nav_text_color"/>
     </LinearLayout>
 
@@ -101,7 +103,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Messages"
-            android:textSize="11sp"
+            android:textSize="13sp"
+            android:textStyle="bold"
             android:textColor="@color/nav_text_color"/>
     </LinearLayout>
 
@@ -132,7 +135,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Profile"
-            android:textSize="11sp"
+            android:textSize="13sp"
+            android:textStyle="bold"
             android:textColor="@color/nav_text_color"/>
     </LinearLayout>
 
