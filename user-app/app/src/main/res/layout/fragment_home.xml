@@ -33,10 +33,9 @@
                 android:id="@+id/servicesComponent"
                 layout="@layout/layout_services_section"/>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="600dp"/>
+            <include
+                android:id="@+id/topRatedComponent"
+                layout="@layout/layout_top_rated"/>
 
 
         </LinearLayout>
