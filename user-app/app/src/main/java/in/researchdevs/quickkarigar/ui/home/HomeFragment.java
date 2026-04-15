@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
 
     private void startHeroAnimation() {
 
-        // 🔥 STEP 1: Lock width using longest word
+        //STEP 1: Lock width using longest word
         heroText.post(() -> {
 
             String longest = "";
@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
             // lock width after layout
             heroText.setMinWidth(heroText.getWidth());
 
-            // 🔥 Entry animation
+            // Entry animation
             heroText.setAlpha(0f);
             heroText.setTranslationY(30f);
 
@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment {
                     .setInterpolator(new OvershootInterpolator(0.8f))
                     .start();
 
-            // 🔥 STEP 2: Start typing AFTER layout is stable
+            // STEP 2: Start typing AFTER layout is stable
             heroRunnable = new Runnable() {
 
                 int charIndex = 0;
