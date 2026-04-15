@@ -25,6 +25,8 @@ import android.widget.TextView;
 import in.researchdevs.quickkarigar.R;
 import in.researchdevs.quickkarigar.adapter.ArtisanAdapter;
 import in.researchdevs.quickkarigar.model.Artisan;
+import in.researchdevs.quickkarigar.ui.address.Address;
+import in.researchdevs.quickkarigar.ui.address.AddressBottomSheet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +49,46 @@ public class HomeFragment extends Fragment {
     ArtisanAdapter adapter;
     ServiceAdapter serviceAdapter;
 
+    private int selectedAddressId = 1; // default
+    private List<Address> addressList = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // ================= LOCATION PICKER ============
+        View locationPicker = view.findViewById(R.id.locationPicker);
+        TextView locationText = view.findViewById(R.id.locationText);
+        locationText.setText("Detecting...");
+
+        locationPicker.setOnClickListener(v -> {
+            openAddressSheet(locationText);
+        });
+
+
+        addressList.add(new Address(1, "Home",
+                "Swapna Apartment 2, Chit Kalikapur, Near Ruby Hospital, Anandapur, Kolkata, West Bengal 700099",
+                true,
+                R.drawable.ic_home));
+
+        addressList.add(new Address(2, "Office",
+                "Heritage Institute of Technology (HITK), Chowbaga Road, Anandapur, Kolkata, West Bengal 700107",
+                false,
+                R.drawable.ic_home));
+
+        addressList.add(new Address(3, "Studio",
+                "Mukundapur Main Road, Opposite Rabindranath Tagore International Institute of Cardiac Sciences (RTIICS), Mukundapur, Kolkata, West Bengal 700107",
+                false,
+                R.drawable.ic_location));
+
+        for (Address a : addressList) {
+            if (a.id == selectedAddressId) {
+                locationText.setText(a.fullAddress);
+                break;
+            }
+        }
 
         // ================= HERO =================
         heroText = view.findViewById(R.id.heroText);
@@ -127,6 +164,39 @@ public class HomeFragment extends Fragment {
         adapter.filterByService(topService.id);
 
         return view;
+    }
+
+
+
+    private void openAddressSheet(TextView locationText) {
+
+        AddressBottomSheet sheet = new AddressBottomSheet();
+
+        // sync default state BEFORE opening
+        for (Address a : addressList) {
+            a.isDefault = (a.id == selectedAddressId);
+        }
+
+        sheet.setData(addressList);
+
+        sheet.setSelectedAddressId(selectedAddressId); // important
+
+        sheet.setCallback(new AddressBottomSheet.Callback() {
+
+            @Override
+            public void onAddressSelected(Address address) {
+                selectedAddressId = address.id; // persist state
+                locationText.setText(address.fullAddress);
+            }
+
+            @Override
+            public void onAddNew() {}
+
+            @Override
+            public void onEdit(Address address) {}
+        });
+
+        sheet.show(getParentFragmentManager(), "AddressSheet");
     }
 
     // ================= SEARCH =================

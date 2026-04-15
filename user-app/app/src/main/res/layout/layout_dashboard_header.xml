@@ -11,6 +11,7 @@
 
     <!-- Location -->
     <LinearLayout
+        android:id="@+id/locationPicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -19,7 +20,6 @@
 
         <!-- Location Icon -->
         <ImageView
-            android:id="@+id/locationPicker"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_location"
@@ -49,6 +49,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary"
+                android:maxLines="1"
                 android:layout_marginTop="2dp"/>
         </LinearLayout>
     </LinearLayout>

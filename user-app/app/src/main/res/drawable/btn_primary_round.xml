@@ -6,7 +6,7 @@
         <shape android:shape="rectangle">
 
             <!-- Primary color -->
-            <solid android:color="#1A237E"/>
+            <solid android:color="@color/primary"/>
 
             <!-- Fully rounded (pill shape) -->
             <corners android:radius="15dp"/>
