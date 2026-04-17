@@ -28,8 +28,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     private List<Address> list;
     private Listener listener;
-
-    private int selectedAddressId; // SOURCE OF TRUTH
+    private int selectedAddressId;
 
     public AddressAdapter(List<Address> list, int selectedAddressId, Listener listener) {
         this.list = list;
@@ -37,9 +36,26 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         this.selectedAddressId = selectedAddressId;
     }
 
-    // REQUIRED METHOD
+    // bg_add_address_inputOptimized selection update (no full refresh)
     public void setSelectedId(int id) {
+        int oldId = this.selectedAddressId;
         this.selectedAddressId = id;
+
+        int oldPos = -1;
+        int newPos = -1;
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).id == oldId) oldPos = i;
+            if (list.get(i).id == id) newPos = i;
+        }
+
+        if (oldPos != -1) notifyItemChanged(oldPos);
+        if (newPos != -1) notifyItemChanged(newPos);
+    }
+
+    // bg_add_address_inputUpdate list (after edit/add/delete)
+    public void updateList(List<Address> newList) {
+        this.list = newList;
         notifyDataSetChanged();
     }
 
@@ -56,56 +72,62 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
         Address a = list.get(position);
 
+        // bg_add_address_inputAlways keep derived fields safe
+        a.updateDerivedFields();
+
         h.title.setText(a.title);
         h.subtitle.setText(a.fullAddress);
-
-        //  FIXED ICON
         h.icon.setImageResource(a.iconRes);
 
         boolean isSelected = (a.id == selectedAddressId);
 
-        // DEFAULT TAG
-        h.defaultTag.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+        // bg_add_address_inputDEFAULT TAG (based on model, not selection)
+        h.defaultTag.setVisibility(a.isDefault ? View.VISIBLE : View.GONE);
 
-        // BACKGROUND
+        // bg_add_address_inputBackground
         h.itemView.setBackground(getRipple(h.itemView.getContext(), isSelected));
 
-        // CLICK
+        // bg_add_address_inputCLICK (Select Address)
         h.itemView.setOnClickListener(v -> {
 
-            int adapterPosition = h.getAdapterPosition();
-            if (adapterPosition == RecyclerView.NO_POSITION) return;
+            int pos = h.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
 
-            Address clicked = list.get(adapterPosition);
+            Address clicked = list.get(pos);
 
             // animation
-            v.animate().scaleX(0.96f).scaleY(0.96f).setDuration(80).withEndAction(() -> {
-                v.animate().scaleX(1f).scaleY(1f).setDuration(80).start();
-            }).start();
+            v.animate().scaleX(0.96f).scaleY(0.96f).setDuration(80)
+                    .withEndAction(() ->
+                            v.animate().scaleX(1f).scaleY(1f).setDuration(80).start()
+                    ).start();
 
-            selectedAddressId = clicked.id;
+            setSelectedId(clicked.id);
 
-            notifyDataSetChanged();
-
-            listener.onAddressClick(clicked);
+            if (listener != null) {
+                listener.onAddressClick(clicked);
+            }
         });
 
-        // EDIT CLICK
+        // bg_add_address_inputEDIT CLICK
         h.editBtn.setOnClickListener(v -> {
-            int adapterPosition = h.getAdapterPosition();
-            if (adapterPosition == RecyclerView.NO_POSITION) return;
+            v.setPressed(true); // force visual feedback
 
-            Address address = list.get(adapterPosition);
+            int pos = h.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
 
-            android.widget.Toast.makeText(
-                    v.getContext(),
-                    "Edit Address ID: " + address.id + "\nUnder Development",
-                    android.widget.Toast.LENGTH_SHORT
-            ).show();
-            // Optional: still trigger callback if needed later
+            Address address = list.get(pos);
+
             if (listener != null) {
                 listener.onEditClick(address);
             }
+        });
+
+        h.editBtn.setOnTouchListener((v, event) -> {
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+                v.performClick(); // REQUIRED
+            }
+            return true; // we handled it
         });
     }
 
@@ -113,6 +135,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     public int getItemCount() {
         return list.size();
     }
+
+    // ================= VIEW HOLDER =================
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -129,6 +153,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             defaultTag = itemView.findViewById(R.id.defaultTag);
         }
     }
+
+    // ================= UI BACKGROUND =================
 
     private Drawable getRipple(Context ctx, boolean selected) {
 

@@ -68,20 +68,35 @@ public class HomeFragment extends Fragment {
         });
 
 
-        addressList.add(new Address(1, "Home",
-                "Swapna Apartment 2, Chit Kalikapur, Near Ruby Hospital, Anandapur, Kolkata, West Bengal 700099",
+        addressList.add(new Address(
+                1,
+                "Swapna Apartment 2",
+                "Chit Kalikapur, Near Ruby Hospital, Anandapur",
+                "Kolkata",
+                "700099",
                 true,
-                R.drawable.ic_home));
+                R.drawable.ic_home
+        ));
 
-        addressList.add(new Address(2, "Office",
-                "Heritage Institute of Technology (HITK), Chowbaga Road, Anandapur, Kolkata, West Bengal 700107",
+        addressList.add(new Address(
+                2,
+                "Heritage Institute of Technology (HITK)",
+                "Chowbaga Road, Anandapur",
+                "Kolkata",
+                "700107",
                 false,
-                R.drawable.ic_home));
+                R.drawable.ic_home
+        ));
 
-        addressList.add(new Address(3, "Studio",
-                "Mukundapur Main Road, Opposite Rabindranath Tagore International Institute of Cardiac Sciences (RTIICS), Mukundapur, Kolkata, West Bengal 700107",
+        addressList.add(new Address(
+                3,
+                "Mukundapur Main Road",
+                "Opposite RTIICS Hospital, Mukundapur",
+                "Kolkata",
+                "700107",
                 false,
-                R.drawable.ic_location));
+                R.drawable.ic_location
+        ));
 
         for (Address a : addressList) {
             if (a.id == selectedAddressId) {
@@ -173,9 +188,9 @@ public class HomeFragment extends Fragment {
         AddressBottomSheet sheet = new AddressBottomSheet();
 
         // sync default state BEFORE opening
-        for (Address a : addressList) {
-            a.isDefault = (a.id == selectedAddressId);
-        }
+//        for (Address a : addressList) {
+//            a.isDefault = (a.id == selectedAddressId);
+//        }
 
         sheet.setData(addressList);
 

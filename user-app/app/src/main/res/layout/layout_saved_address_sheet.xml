@@ -30,21 +30,18 @@
             android:textColor="@color/primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
         <TextView
             android:id="@+id/subtitle"
             android:text="Select or add a delivery location"
-            android:textSize="12sp"
-            android:textColor="#888"
+            android:textSize="13sp"
             android:layout_below="@id/title"
             android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
         <ImageView
             android:id="@+id/btnClose"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_cross"
             app:tint="#999"/>
@@ -71,8 +68,16 @@
         android:focusable="true"
         android:paddingHorizontal="16dp">
 
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_location"
+            app:tint="@color/white"
+            />
+
         <TextView
-            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add New Address"
             android:textSize="16sp"

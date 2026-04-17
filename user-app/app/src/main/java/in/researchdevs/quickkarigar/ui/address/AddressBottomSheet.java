@@ -24,8 +24,6 @@ public class AddressBottomSheet extends BottomSheetDialogFragment {
     private AddressAdapter adapter;
 
     private List<Address> list = new ArrayList<>();
-
-    // source of truth for selection
     private int selectedAddressId = -1;
 
     public interface Callback {
@@ -43,11 +41,10 @@ public class AddressBottomSheet extends BottomSheetDialogFragment {
     }
 
     public void setData(List<Address> data) {
-        this.list.clear();
-        this.list.addAll(data);
+        list.clear();
+        list.addAll(data);
     }
 
-    // VERY IMPORTANT (used from HomeFragment)
     public void setSelectedAddressId(int id) {
         this.selectedAddressId = id;
     }
@@ -68,56 +65,117 @@ public class AddressBottomSheet extends BottomSheetDialogFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // ================= ADAPTER =================
         adapter = new AddressAdapter(list, selectedAddressId, new AddressAdapter.Listener() {
 
             @Override
             public void onAddressClick(Address address) {
 
-                // update selected id
                 selectedAddressId = address.id;
-
-                // update model (optional but good for consistency)
-                for (Address a : list) {
-                    a.isDefault = (a.id == selectedAddressId);
-                }
-
-                // update UI
                 adapter.setSelectedId(selectedAddressId);
 
-                // callback
                 if (callback != null) {
-                    callback.onAddressSelected(address);
+                    // create copy → prevent external modification
+                    Address safeAddress = new Address(
+                            address.id,
+                            address.house,
+                            address.area,
+                            address.city,
+                            address.pincode,
+                            address.isDefault,
+                            address.iconRes
+                    );
+                    callback.onAddressSelected(safeAddress);
                 }
+
 
                 dismiss();
             }
 
             @Override
             public void onEditClick(Address address) {
-                if (callback != null) {
-                    callback.onEdit(address);
-                }
+                openEditSheet(address);
             }
         });
 
         recyclerView.setAdapter(adapter);
 
-        // ================= ACTIONS =================
+        // CLOSE
         btnClose.setOnClickListener(v -> dismiss());
 
-        btnAdd.setOnClickListener(v -> {
-            android.widget.Toast.makeText(
-                    v.getContext(),
-                    "Add New Address - Under Development",
-                    android.widget.Toast.LENGTH_SHORT
-            ).show();
-            // Optional: keep callback for future
+        // ADD NEW
+        btnAdd.setOnClickListener(v -> openAddSheet());
+
+        return view;
+    }
+
+    // ================= ADD =================
+
+    private void openAddSheet() {
+
+        AddAddressBottomSheet sheet = new AddAddressBottomSheet();
+
+        sheet.setCallback(newAddress -> {
+
+            if (newAddress.isDefault) {
+                for (Address a : list) {
+                    a.isDefault = false;
+                }
+            }
+
+            newAddress.updateDerivedFields();
+
+            list.add(newAddress);
+
+            selectedAddressId = newAddress.id;
+
+            adapter.notifyItemInserted(list.size() - 1);
+            adapter.setSelectedId(selectedAddressId);
+
             if (callback != null) {
-                callback.onAddNew();
+                callback.onAddressSelected(newAddress);
             }
         });
 
-        return view;
+        sheet.show(getParentFragmentManager(), "AddAddress");
+    }
+
+    // ================= EDIT =================
+
+    private void openEditSheet(Address address) {
+
+        AddAddressBottomSheet sheet = new AddAddressBottomSheet();
+        sheet.setEditAddress(address);
+
+        sheet.setCallback(updated -> {
+
+            for (int i = 0; i < list.size(); i++) {
+
+                if (list.get(i).id == updated.id) {
+
+                    if (updated.isDefault) {
+                        for (Address a : list) {
+                            a.isDefault = false;
+                        }
+                    }
+
+                    updated.updateDerivedFields();
+
+                    list.set(i, updated);
+
+                    selectedAddressId = updated.id;
+
+                    adapter.setSelectedId(selectedAddressId);
+                    adapter.notifyItemChanged(i);
+
+                    if (callback != null) {
+                        callback.onAddressSelected(updated);
+                    }
+
+                    break;
+                }
+            }
+        });
+
+        sheet.show(getParentFragmentManager(), "EditAddress");
     }
 }
