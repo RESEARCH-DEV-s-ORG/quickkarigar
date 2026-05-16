@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="blue_dark">#050526</color>
+    <color name="primary_dark">#1A237E</color>" <!-- 050526 -->
     <color name="primary">#1A237E</color>
     <color name="primary_feel">#8AB6BFFF</color>
     <color name="secondary">#455A64</color>

@@ -22,11 +22,22 @@ public class ArtisanAdapter extends RecyclerView.Adapter<ArtisanAdapter.ViewHold
 
     private List<Artisan> list;
     private List<Artisan> originalList;
+    private OnArtisanActionListener actionListener;   // add this field
 
-    public ArtisanAdapter(List<Artisan> list) {
-        this.list = new ArrayList<>(list);
-        this.originalList = new ArrayList<>(list);
+
+    public interface OnArtisanActionListener {
+        void onBookNow(Artisan artisan);   // artisan is online  → "BOOK NOW"
+        void onNotifyMe(Artisan artisan);  // artisan is offline → "NOTIFY ME"
     }
+
+    // Replace the existing constructor:
+    public ArtisanAdapter(List<Artisan> list, OnArtisanActionListener listener) {
+        this.list           = new ArrayList<>(list);
+        this.originalList   = new ArrayList<>(list);
+        this.actionListener = listener;
+    }
+
+
 
     @NonNull
     @Override
@@ -85,6 +96,25 @@ public class ArtisanAdapter extends RecyclerView.Adapter<ArtisanAdapter.ViewHold
                                     .start()
                     ).start();
         });
+
+        if (h.actionBtn != null) {
+            h.actionBtn.setOnClickListener(v -> {
+                // micro-bounce animation
+                v.animate()
+                        .scaleX(0.93f).scaleY(0.93f).setDuration(80)
+                        .withEndAction(() ->
+                                v.animate().scaleX(1f).scaleY(1f).setDuration(120)
+                                        .withEndAction(() -> {
+                                            if (actionListener == null) return;
+                                            if (a.isOnline) {
+                                                actionListener.onBookNow(a);
+                                            } else {
+                                                actionListener.onNotifyMe(a);
+                                            }
+                                        }).start()
+                        ).start();
+            });
+        }
     }
 
     @Override

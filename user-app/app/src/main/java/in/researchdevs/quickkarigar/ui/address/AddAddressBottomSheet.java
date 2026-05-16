@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import in.researchdevs.quickkarigar.R;
+import in.researchdevs.quickkarigar.model.Address;
 
 public class AddAddressBottomSheet extends BottomSheetDialogFragment {
 

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.researchdevs.quickkarigar.R;
+import in.researchdevs.quickkarigar.adapter.AddressAdapter;
+import in.researchdevs.quickkarigar.model.Address;
 
 public class AddressBottomSheet extends BottomSheetDialogFragment {
 

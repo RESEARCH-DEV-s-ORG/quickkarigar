@@ -1,4 +1,4 @@
-package in.researchdevs.quickkarigar.ui.address;
+package in.researchdevs.quickkarigar.model;
 
 public class Address {
 

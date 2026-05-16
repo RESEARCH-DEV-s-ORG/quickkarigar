@@ -1,4 +1,4 @@
-package in.researchdevs.quickkarigar.ui.address;
+package in.researchdevs.quickkarigar.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import in.researchdevs.quickkarigar.R;
+import in.researchdevs.quickkarigar.model.Address;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
 

@@ -21,12 +21,14 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import in.researchdevs.quickkarigar.R;
 import in.researchdevs.quickkarigar.adapter.ArtisanAdapter;
 import in.researchdevs.quickkarigar.model.Artisan;
-import in.researchdevs.quickkarigar.ui.address.Address;
+import in.researchdevs.quickkarigar.model.Address;
 import in.researchdevs.quickkarigar.ui.address.AddressBottomSheet;
+import in.researchdevs.quickkarigar.ui.quotation.RequestQuotationFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,7 +174,35 @@ public class HomeFragment extends Fragment {
 
         seedArtisans();
 
-        adapter = new ArtisanAdapter(fullArtisanList);
+        adapter = new ArtisanAdapter(fullArtisanList, new ArtisanAdapter.OnArtisanActionListener() {
+
+            @Override
+            public void onBookNow(Artisan artisan) {
+                // Open quotation fragment
+                RequestQuotationFragment quotationFrag =
+                        RequestQuotationFragment.newInstance(artisan);
+
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(
+                                android.R.anim.slide_in_left,   // enter
+                                android.R.anim.fade_out,        // exit
+                                android.R.anim.fade_in,         // pop enter
+                                android.R.anim.slide_out_right  // pop exit
+                        )
+                        .replace(R.id.fragmentContainer, quotationFrag)
+                        .addToBackStack("quotation")
+                        .commit();
+            }
+            @Override
+            public void onNotifyMe(Artisan artisan) {
+                // TODO: subscribe user to artisan availability notification
+                Toast.makeText(getContext(),
+                        "You'll be notified when " + artisan.name + " is online!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
         recyclerArtisans.setAdapter(adapter);
 
         Service topService = getTopServices().get(0);
