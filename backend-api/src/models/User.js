@@ -1,21 +1,70 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    phone: { type: String, required: true },
-    role: { type: String, enum: ['customer', 'worker', 'admin'], default: 'customer' },
-    profilePicture: { type: String, default: '' },
-    address: {
-        city: String,
-        area: String,
-        coordinates: {
-            type: [Number], // [longitude, latitude] for GeoJSON
-            index: '2dsphere' // Critical for "nearby" search
-        }
+    fullName: {
+        type: String,
+        required: true,
+        trim: true
     },
-    createdAt: { type: Date, default: Date.now }
+    email: {
+        type: String,
+        unique: true,
+        sparse: true,
+        lowercase: true
+    },
+    phone: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    passwordHash: {
+        type: String
+    },
+    role: {
+        type: String,
+        enum: [
+            'customer',
+            'worker',
+            'admin',
+            'super_admin'
+        ],
+        default: 'customer'
+    },
+    isPhoneVerified: {
+        type: Boolean,
+        default: false
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+    isKYCVerified: {
+        type: Boolean,
+        default: false
+    },
+    profilePicture: String,
+    gender: {
+        type: String,
+        enum: ['male', 'female', 'other']
+    },
+    dateOfBirth: Date,
+    status: {
+        type: String,
+        enum: [
+            'active',
+            'blocked',
+            'suspended',
+            'deleted'
+        ],
+        default: 'active'
+    },
+    lastLoginAt: Date,
+    deviceTokens: [String]
+}, {
+    timestamps: true
 });
 
-module.exports = mongoose.model('User', userSchema);ß
+module.exports = mongoose.model(
+    'User',
+    userSchema
+);

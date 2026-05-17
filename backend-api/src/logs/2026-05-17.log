@@ -1,0 +1,9 @@
+[17/05/2026, 06:15:01 pm] [SUCCESS] Server running on http://localhost:5000
+[17/05/2026, 06:15:01 pm] [ERROR] MongoDB Connection Failed | The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[17/05/2026, 06:15:26 pm] [SUCCESS] Server running on http://localhost:8000
+[17/05/2026, 06:15:31 pm] [DATABASE] MongoDB Connected
+[17/05/2026, 06:16:48 pm] [INFO] GET /
+[17/05/2026, 06:16:48 pm] [SUCCESS] Health check endpoint accessed
+[17/05/2026, 06:16:55 pm] [INFO] GET /api
+[17/05/2026, 06:17:04 pm] [INFO] GET /api/health
+[17/05/2026, 06:17:11 pm] [INFO] GET /api/users

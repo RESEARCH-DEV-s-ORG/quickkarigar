@@ -1,29 +1,88 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const mongoose = require('mongoose');
+const cors = require('cors');
+
 require('dotenv').config();
 
+// IMPORTS
+const connectDB = require('./config/db');
+const apiRoutes = require('./routes/api');
+const chatSocket = require('./sockets/chatSocket');
+const logger = require('./utils/logger');
+
+// EXPRESS APP
 const app = express();
+
 const server = http.createServer(app);
+
+// SOCKET SERVER
 const io = new Server(server, {
-    cors: { origin: "*" } // Adjust for production
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
 
+// DATABASE
+connectDB();
+// MIDDLEWARE
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+// REQUEST LOGGER
+app.use((req, res, next) => {
+    logger.info(
+        `${req.method} ${req.originalUrl}`
+    );
+    next();
+});
+// ROUTES
+app.use('/api', apiRoutes);
+// SOCKET EVENTS
+chatSocket(io);
 
-// Socket.io Connection
-io.on('connection', (socket) => {
-    console.log('A user connected:', socket.id);
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
+// HEALTH CHECK
+app.get('/', (req, res) => {
+    logger.success(
+        'Health check endpoint accessed'
+    );
+    res.status(200).json({
+        success: true,
+        message: "QuickKarigar Backend API Running"
     });
 });
 
+// 404 HANDLER
+app.use((req, res) => {
+    logger.warn(
+        `404 Route Not Found: ${req.originalUrl}`
+    );
+    res.status(404).json({
+        success: false,
+        message: 'Route Not Found'
+    });
+});
+// GLOBAL ERROR HANDLER
+app.use((err, req, res, next) => {
+    logger.error(
+        'Internal Server Error',
+        err.message
+    );
+    res.status(500).json({
+        success: false,
+        message: 'Internal Server Error'
+    });
+});
+// SERVER START
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+server.listen(PORT, () => {
+
+    logger.success(
+        `Server running on http://localhost:${PORT}`
+    );
+});

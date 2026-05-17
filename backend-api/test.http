@@ -1,0 +1,117 @@
+### =========================================
+### QUICKKARIGAR BACKEND API TESTS
+### =========================================
+
+@baseUrl = http://localhost:8000
+
+### =========================================
+### ROOT HEALTH CHECK
+### =========================================
+
+GET {{baseUrl}}/
+Content-Type: application/json
+
+###
+
+### =========================================
+### API ROOT
+### =========================================
+
+GET {{baseUrl}}/api
+Content-Type: application/json
+
+###
+
+### =========================================
+### API HEALTH
+### =========================================
+
+GET {{baseUrl}}/api/health
+Content-Type: application/json
+
+###
+
+### =========================================
+### USERS LIST
+### =========================================
+
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+
+###
+
+### =========================================
+### WORKERS LIST
+### =========================================
+
+GET {{baseUrl}}/api/workers
+Content-Type: application/json
+
+###
+
+### =========================================
+### BOOKINGS LIST
+### =========================================
+
+GET {{baseUrl}}/api/bookings
+Content-Type: application/json
+
+###
+
+### =========================================
+### CREATE USER
+### =========================================
+
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Sourav Sharma",
+  "email": "sourav@example.com",
+  "phone": "9876543210",
+  "role": "customer"
+}
+
+###
+
+### =========================================
+### CREATE WORKER
+### =========================================
+
+POST {{baseUrl}}/api/workers
+Content-Type: application/json
+
+{
+  "name": "Arjun Electrician",
+  "service": "Electrician",
+  "experience": 5,
+  "location": "Kolkata"
+}
+
+###
+
+### =========================================
+### CREATE BOOKING
+### =========================================
+
+POST {{baseUrl}}/api/bookings
+Content-Type: application/json
+
+{
+  "customerId": "123456",
+  "workerId": "654321",
+  "serviceType": "Internal Wiring",
+  "date": "2026-05-18",
+  "timeSlot": "10:30 AM"
+}
+
+###
+
+### =========================================
+### INVALID ROUTE TEST
+### =========================================
+
+GET {{baseUrl}}/api/unknown
+Content-Type: application/json
+
+###

@@ -1,33 +1,161 @@
+const logger = require('../utils/logger');
+
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        console.log(`New connection: ${socket.id}`);
-
-        // 1. Join a specific room (e.g., based on Booking ID)
+        logger.socket(
+            `New Connection: ${socket.id}`
+        );
+        // ═══════════════════════════════════════
+        // JOIN ROOM
+        // ═══════════════════════════════════════
         socket.on('join_room', (roomId) => {
-            socket.join(roomId);
-            console.log(`User ${socket.id} joined room: ${roomId}`);
-        });
+            try {
+                socket.join(roomId);
 
-        // 2. Handle Chat Messages
-        socket.on('send_message', (data) => {
-            // data: { roomId, sender, text, timestamp }
-            io.to(data.roomId).emit('receive_message', data);
+                logger.socket(
+                    `Socket ${socket.id} joined room: ${roomId}`
+                );
+                socket.emit('room_joined', {
+                    success: true,
+                    roomId
+                });
+            } catch (error) {
+                logger.error(
+                    'Join Room Error',
+                    error.message
+                );
+            }
         });
-
-        // 3. Notify Worker of a new Booking Request
-        // In your API, when a booking is saved, you can emit this
+        // ═══════════════════════════════════════
+        // SEND MESSAGE
+        // ═══════════════════════════════════════
+        socket.on('send_message', async (data) => {
+            try {
+                /*
+                    data = {
+                        roomId,
+                        sender,
+                        text,
+                        timestamp
+                    }
+                */
+                if (
+                    !data.roomId ||
+                    !data.sender ||
+                    !data.text
+                ) {
+                    return socket.emit('message_error', {
+                        success: false,
+                        message: 'Invalid message data'
+                    });
+                }
+                logger.info(
+                    `Message from ${data.sender} in room ${data.roomId}`
+                );
+                // BROADCAST MESSAGE
+                io.to(data.roomId).emit(
+                    'receive_message',
+                    {
+                        success: true,
+                        message: data
+                    }
+                );
+            } catch (error) {
+                logger.error(
+                    'Send Message Error',
+                    error.message
+                );
+                socket.emit('message_error', {
+                    success: false,
+                    message: 'Message sending failed'
+                });
+            }
+        });
+        // ═══════════════════════════════════════
+        // NEW BOOKING REQUEST
+        // ═══════════════════════════════════════
         socket.on('new_booking_request', (data) => {
-            // data: { workerId, customerName, serviceType }
-            // Broadcast to the specific worker's personal room
-            io.to(data.workerId).emit('notify_worker', {
-                message: `New ${data.serviceType} request from ${data.customerName}`,
-                bookingData: data
-            });
+            try {
+                /*
+                    data = {
+                        workerId,
+                        customerName,
+                        serviceType
+                    }
+                */
+                logger.info(
+                    `New Booking Request for Worker ${data.workerId}`
+                );
+                io.to(data.workerId).emit(
+                    'notify_worker',
+                    {
+                        success: true,
+                        message:
+                            `New ${data.serviceType} request from ${data.customerName}`,
+                        bookingData: data
+                    }
+                );
+
+            } catch (error) {
+                logger.error(
+                    'Booking Notification Error',
+                    error.message
+                );
+            }
+        });
+        // ═══════════════════════════════════════
+        // LIVE LOCATION UPDATE
+        // ═══════════════════════════════════════
+        socket.on('live_location', (data) => {
+
+            try {
+                /*
+                    data = {
+                        roomId,
+                        latitude,
+                        longitude,
+                        userId
+                    }
+                */
+                io.to(data.roomId).emit(
+                    'location_updated',
+                    data
+                );
+            } catch (error) {
+                logger.error(
+                    'Live Location Error',
+                    error.message
+                );
+            }
         });
 
-        // 4. Handle Disconnection
+        // ═══════════════════════════════════════
+        // TYPING INDICATOR
+        // ═══════════════════════════════════════
+        socket.on('typing', (data) => {
+            socket.to(data.roomId).emit(
+                'user_typing',
+                {
+                    userId: data.userId
+                }
+            );
+        });
+        // ═══════════════════════════════════════
+        // DISCONNECT
+        // ═══════════════════════════════════════
         socket.on('disconnect', () => {
-            console.log('User disconnected');
+            logger.warn(
+                `User Disconnected: ${socket.id}`
+            );
+        });
+        // ═══════════════════════════════════════
+        // SOCKET ERROR
+        // ═══════════════════════════════════════
+        socket.on('error', (error) => {
+            logger.error(
+                `Socket Error: ${socket.id}`,
+                error.message
+            );
         });
     });
 };
