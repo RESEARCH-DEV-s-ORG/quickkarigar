@@ -1,609 +1,644 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-
+<html class="scroll-smooth" lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Quick Karigar | Professional Home Services</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
-          rel="stylesheet" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <style>
-        * {
-            font-family: 'Manrope', sans-serif;
-        }
-
-        body {
-            overflow-x: hidden;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
         .blueprint-grid {
-            background-image:
-                    radial-gradient(circle, rgba(26, 35, 126, 0.08) 1px, transparent 1px);
-
-            background-size: 30px 30px;
+            background-image: radial-gradient(circle, #1A237E 1px, transparent 1px);
+            background-size: 32px 32px;
+            opacity: 0.03;
         }
-
-        .service-card-hover {
-            transition: all 0.3s ease;
-        }
-
         .service-card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow:
-                    0 20px 25px -5px rgba(0, 0, 0, 0.08),
-                    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(26, 35, 126, 0.1), 0 10px 10px -5px rgba(26, 35, 126, 0.04);
         }
-
-        .container-responsive {
-            width: 100%;
-            max-width: 1280px;
-            margin: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-
-        @media(min-width:768px) {
-            .container-responsive {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
+        /* Mobile Frame Styling */
+        .app-frame {
+            width: 320px;
+            height: 640px;
+            background: white;
+            border: 12px solid #2e3132;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-
-        @media(min-width:1280px) {
-            .container-responsive {
-                padding-left: 5rem;
-                padding-right: 5rem;
-            }
+        .app-content {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-
-        .hero-title {
-            font-size: clamp(2.5rem, 7vw, 5rem);
-            line-height: 1.1;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.3rem);
+        .app-content::-webkit-scrollbar {
+            display: none;
         }
     </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#e0e0ff",
+                        "on-primary-fixed": "#000767",
+                        "tertiary-container": "#2c3039",
+                        "tertiary-fixed-dim": "#c4c6d2",
+                        "on-tertiary-fixed-variant": "#434750",
+                        "surface": "#f8f9fa",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c6c5d4",
+                        "surface-bright": "#f8f9fa",
+                        "surface-variant": "#E1E2E9",
+                        "primary": "#1A237E",
+                        "surface-tint": "#4c56af",
+                        "secondary-container": "#cfe6f2",
+                        "inverse-primary": "#bdc2ff",
+                        "blueprint-dot": "rgba(26, 35, 126, 0.03)",
+                        "outline": "#767683",
+                        "tertiary": "#181b23",
+                        "on-surface-variant": "#454652",
+                        "error": "#BA1A1A",
+                        "surface-dim": "#d9dadb",
+                        "on-background": "#191c1d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#181b24",
+                        "surface-container": "#edeeef",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#354a53",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary-container": "#9597a2",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed-variant": "#343d96",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "on-surface": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#8690ee",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#b4cad6",
+                        "on-secondary-container": "#526772",
+                        "tertiary-fixed": "#e0e2ee",
+                        "secondary-fixed": "#cfe6f2",
+                        "secondary": "#4c616c",
+                        "inverse-surface": "#2e3132",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#071e27",
+                        "primary-container": "#1a237e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "gutter": "16px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "section-gap-mobile": "48px",
+                        "section-gap-desktop": "96px",
+                        "margin-desktop": "80px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "title-lg": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "label-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "800"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["60px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "800"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
 </head>
-
-<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
-
-<!-- NAVBAR -->
-
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b">
-
-    <div class="container-responsive h-20 flex items-center justify-between">
-
-        <div class="text-2xl font-extrabold text-indigo-900">
-            Quick Karigar
+<body class="bg-background font-body-md text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant shadow-sm h-20">
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center h-full">
+        <div class="font-title-lg text-title-lg font-extrabold text-primary tracking-tight">Quick Karigar</div>
+        <div class="hidden md:flex gap-8 items-center">
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Find Pros</a>
+            <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="/partners">For Partners</a>
+            <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="/about-us">About Us</a>
         </div>
-
-        <div class="hidden lg:flex items-center gap-8 font-semibold">
-
-            <a href="#" class="text-indigo-900">Home</a>
-            <a href="#">Services</a>
-            <a href="#">About</a>
-            <a href="#">Partners</a>
-            <a href="#">Contact</a>
-
-        </div>
-
-        <div class="flex items-center gap-4">
-
-            <button class="hidden md:block font-semibold">
-                Login
-            </button>
-
-            <button
-                    class="bg-indigo-900 text-white px-5 py-3 rounded-xl font-bold hover:scale-105 transition">
+        <div class="flex gap-4 items-center">
+            <a href="/login">
+                <button class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 active:scale-95 font-label-md text-label-md">Login</button>
+            </a>
+            <a href="/download-apk"
+               class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-bold hover:opacity-90 active:scale-95 transition-all font-label-md text-label-md inline-flex items-center justify-center">
                 Download App
-            </button>
-
-            <button class="lg:hidden">
-                    <span class="material-symbols-outlined text-3xl">
-                        menu
-                    </span>
-            </button>
-
+            </a>
         </div>
-
     </div>
-
 </nav>
-
-<!-- HERO -->
-
-<section class="relative pt-32 pb-20 lg:pb-32 overflow-hidden bg-white">
-
-    <div class="blueprint-grid absolute inset-0"></div>
-
-    <div
-            class="container-responsive relative z-10 flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
-
-        <!-- LEFT -->
-
-        <div class="flex-1 text-center lg:text-left">
-
-            <div
-                    class="inline-flex items-center gap-2 bg-indigo-100 text-indigo-900 px-4 py-2 rounded-full text-sm font-bold mb-6">
-
-                <div class="w-2 h-2 rounded-full bg-indigo-900 animate-pulse"></div>
-
-                50,000+ VERIFIED PROFESSIONALS
-
-            </div>
-
-            <h1 class="hero-title font-extrabold text-indigo-950 mb-6">
-                Book Trusted Local Services Instantly
-            </h1>
-
-            <p class="hero-subtitle text-gray-600 max-w-xl mx-auto lg:mx-0 mb-8">
-                Find trusted electricians, plumbers, cleaners, AC technicians,
-                carpenters and more near you with Quick Karigar.
-            </p>
-
-            <div
-                    class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-
-                <button
-                        class="bg-indigo-900 text-white px-7 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-105 transition">
-
-                        <span class="material-symbols-outlined">
-                            download
-                        </span>
-
-                    Download For Android
-
-                </button>
-
-                <button
-                        class="border border-gray-300 bg-white px-7 py-4 rounded-2xl font-bold hover:bg-gray-100 transition">
-
-                    Learn More
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- RIGHT -->
-
-        <div class="flex-1 flex justify-center">
-
-            <div class="relative">
-
-                <div
-                        class="absolute inset-0 bg-indigo-300 blur-3xl opacity-30 rounded-full">
+<main class="pt-20">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-surface py-section-gap-desktop">
+        <div class="blueprint-grid absolute inset-0"></div>
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center gap-16 relative z-10">
+            <div class="flex-1 space-y-8">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/5 text-primary text-label-sm font-label-sm border border-primary/10">
+<span class="w-2 h-2 rounded-full bg-primary mr-2 animate-pulse"></span>
+                    OVER 50,000 VERIFIED PROFESSIONALS
+                </span>
+                <h1 class="font-display-lg text-display-lg text-primary">Book Trusted Local Services Instantly</h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                    Connect with certified experts for plumbing, electrical, cleaning, and more. Precision maintenance for your home, at the click of a button.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="/download-apk">
+                        <button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-extrabold flex items-center gap-3 shadow-xl hover:scale-105 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" ></span>
+                            DOWNLOAD FOR ANDROID
+                        </button>
+                    </a>
                 </div>
-
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn0-f6RpeTRR--27trLS3IhpTrlWrbISSTxY0R3_Vt-977NWaMOuDvrqhjUh7Iyiq-N6Q25tPX0cIr_nrsOypLDeJvyh9E-oaqn55zsKBj4cAa7fLxcvc6lbirdbfZUc4kGaCiBM2h3m361JQb8fzp3YsfzuButvjttoSpY82lTK3U5CvOokuZS9WxevOCffN7wLv0Ozy57n25KJtqCWJ4JV6C14zCjQKR6SRR-Slsax5MM8HU1DXfO1-4xVwu8-JfEJd0kBp2suzF"
-                     class="relative z-10 w-[220px] sm:w-[280px] lg:w-[340px] rounded-[40px] shadow-2xl border-8 border-white"
-                     alt="Quick Karigar App" />
-
             </div>
-
+            <div class="flex-1 flex justify-center md:justify-end">
+                <div class="relative">
+                    <div class="absolute -inset-10 bg-primary/5 blur-3xl rounded-full"></div>
+                    <!-- Blueprint Pro Integrated App UI Hero -->
+                    <div class="app-frame relative z-10">
+                        <div class="app-content bg-slate-50">
+                            <!-- App Header -->
+                            <div class="p-4 bg-white border-b sticky top-0 z-20">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-white text-xs">location_on</span>
+                                        </div>
+                                        <div class="leading-none">
+                                            <p class="text-[10px] text-slate-500 font-bold uppercase">Current Location</p>
+                                            <p class="text-xs font-bold text-primary">Civil Lines, Jaipur</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-primary text-sm tracking-tighter">QuickKarigar</div>
+                                </div>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-xl text-xs focus:ring-2 focus:ring-primary/20" placeholder="Search for plumbers, tutors..." type="text"/>
+                                </div>
+                            </div>
+                            <!-- App Hero -->
+                            <div class="p-4">
+                                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+                                    <div class="blueprint-grid absolute inset-0 opacity-20"></div>
+                                    <h2 class="text-xl font-black text-primary leading-tight relative z-10">Find the perfect <span class="text-indigo-600">artisan</span> for your home.</h2>
+                                    <p class="text-[10px] text-slate-500 mt-2 relative z-10 font-medium">Verified pros at your doorstep in 60 mins.</p>
+                                </div>
+                            </div>
+                            <!-- Categories Bento -->
+                            <div class="px-4 mb-6">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Services</h3>
+                                    <button class="text-[10px] font-bold text-primary">VIEW ALL</button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 flex flex-col items-center gap-2 group active:scale-95 transition-transform cursor-pointer">
+                                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+                                            <span class="material-symbols-outlined text-lg">electrical_services</span>
+                                        </div>
+                                        <span class="text-[10px] font-black text-primary">Electrician</span>
+                                    </div>
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col items-center gap-2 active:scale-95 transition-transform cursor-pointer">
+                                        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600">
+                                            <span class="material-symbols-outlined text-lg">plumbing</span>
+                                        </div>
+                                        <span class="text-[10px] font-black text-slate-600">Plumber</span>
+                                    </div>
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col items-center gap-2 active:scale-95 transition-transform cursor-pointer">
+                                        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600">
+                                            <span class="material-symbols-outlined text-lg">carpenter</span>
+                                        </div>
+                                        <span class="text-[10px] font-black text-slate-600">Carpenter</span>
+                                    </div>
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col items-center gap-2 active:scale-95 transition-transform cursor-pointer">
+                                        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600">
+                                            <span class="material-symbols-outlined text-lg">cleaning_services</span>
+                                        </div>
+                                        <span class="text-[10px] font-black text-slate-600">Cleaner</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
+    </section>
+    <!-- Popular Services Grid -->
+    <section class="py-section-gap-desktop bg-surface-container-lowest">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+            <div class="mb-12">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Popular Services</h2>
+                <p class="text-on-surface-variant font-body-md mt-2">Professional expertise for every corner of your home.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Cards -->
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">electrical_services</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Electrician</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹199</p>
+                </div>
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">plumbing</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Plumber</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹249</p>
+                </div>
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">carpenter</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Carpenter</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹299</p>
+                </div>
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">cleaning_services</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Home Cleaning</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹499</p>
+                </div>
+                <!-- ... other items ... -->
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">ac_unit</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">AC Repair</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹399</p>
+                </div>
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">format_paint</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Painting</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹999</p>
+                </div>
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">settings_input_component</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Appliance Repair</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹299</p>
+                </div>
+                <div class="service-card-hover bg-white border border-outline-variant p-8 rounded-xl transition-all group cursor-pointer">
+                    <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">bug_report</span>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg mb-1">Pest Control</h3>
+                    <p class="text-on-surface-variant font-label-md">Starts at ₹599</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Trust Signals -->
+    <section class="py-section-gap-desktop bg-surface">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+            <div class="text-center mb-16">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Why Choose Quick Karigar</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                    <div>
+                        <h4 class="font-title-lg text-primary mb-2">Verified Pros</h4>
+                        <p class="text-on-surface-variant font-body-md">Every technician undergoes a multi-step background and identity verification.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                    <div>
+                        <h4 class="font-title-lg text-primary mb-2">Fast Booking</h4>
+                        <p class="text-on-surface-variant font-body-md">Get a confirmed professional at your doorstep in under 60 minutes.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">payments</span>
+                    <div>
+                        <h4 class="font-title-lg text-primary mb-2">Affordable</h4>
+                        <p class="text-on-surface-variant font-body-md">Transparent pricing with no hidden costs. Pay only for the work done.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <div>
+                        <h4 class="font-title-lg text-primary mb-2">Quality Assured</h4>
+                        <p class="text-on-surface-variant font-body-md">We guarantee satisfaction with a 7-day service warranty on all jobs.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+                    <div>
+                        <h4 class="font-title-lg text-primary mb-2">24/7 Support</h4>
+                        <p class="text-on-surface-variant font-body-md">Our dedicated helpdesk is always available for your queries.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+                    <div>
+                        <h4 class="font-title-lg text-primary mb-2">Safety First</h4>
+                        <p class="text-on-surface-variant font-body-md">Contactless service options and strict safety protocols followed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- How It Works Timeline -->
+    <section class="py-section-gap-desktop bg-primary text-on-primary">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+            <h2 class="font-headline-lg text-headline-lg mb-16 text-center">How It Works</h2>
+            <div class="flex flex-col md:flex-row justify-between gap-12 relative">
+                <!-- Step 1 -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-16 h-16 bg-white text-primary rounded-full flex items-center justify-center font-extrabold text-2xl mb-6 shadow-xl">1</div>
+                    <h3 class="font-title-lg mb-3">Select a Service</h3>
+                    <p class="opacity-80 max-w-xs">Choose the service you need from our extensive range of home categories.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-16 h-16 bg-white text-primary rounded-full flex items-center justify-center font-extrabold text-2xl mb-6 shadow-xl">2</div>
+                    <h3 class="font-title-lg mb-3">Schedule Booking</h3>
+                    <p class="opacity-80 max-w-xs">Pick a time that works for you. Our pros are available even on weekends.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-16 h-16 bg-white text-primary rounded-full flex items-center justify-center font-extrabold text-2xl mb-6 shadow-xl">3</div>
+                    <h3 class="font-title-lg mb-3">Get it Done</h3>
+                    <p class="opacity-80 max-w-xs">Sit back and relax while our verified professional handles the job with precision.</p>
+                </div>
+                <!-- Connecting Line -->
+                <div class="hidden md:block absolute top-8 left-[15%] right-[15%] h-[2px] bg-white/20"></div>
+            </div>
+        </div>
+    </section>
+    <!-- Feature Showcase: Engineered for Transparency -->
+    <section class="py-section-gap-desktop bg-surface overflow-hidden">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center gap-20">
+            <div class="flex-1 relative order-2 md:order-1 flex justify-center">
+                <div class="absolute -inset-10 bg-primary/5 blur-3xl rounded-full"></div>
+                <!-- Blueprint Pro Worker Card View -->
+                <div class="app-frame relative z-10">
+                    <div class="app-content bg-slate-50">
+                        <div class="p-4 bg-white border-b sticky top-0 z-20">
+                            <div class="flex items-center gap-4">
+                                <button class="material-symbols-outlined text-slate-800">arrow_back</button>
+                                <h3 class="font-black text-primary text-sm uppercase tracking-widest">Electricians Nearby</h3>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Top Rated Nearby</p>
+                            <!-- Worker Card 1 -->
+                            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                                <div class="flex gap-4 mb-4">
+                                    <img alt="Rahul Sharma" class="w-12 h-12 rounded-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDwK5nSLhHqU1Dx-Gpuw9vxs9nSW0IQo1nWvYo-5lUIVYnDx9-k0vtt_seTl1b0XBHfwrfb1zSduSWScRrxT4vRKO__UGIonl2GszRfVyxjA1G9kfZHPmSMOjZ5P9JjzvGkV14ShPz3kA4FM_fUZe8fi3bYUlJT_aq1LLBPZIxrE3gP-RiLC7yJLgypCbZ1hQDXrfxDIub7HUoGn9d8_-Luc6FQ12GQTEW6sFpjoMJ4jIRnsmvK7CzoWTQ1oqnNNDR1rkc-dJxHYtD"/>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-xs font-black text-primary">Rahul Sharma</h4>
+                                                <p class="text-[10px] text-slate-500 font-bold uppercase">Master Electrician</p>
+                                            </div>
+                                            <div class="bg-indigo-50 px-2 py-1 rounded-md flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-[10px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                                                <span class="text-[10px] font-black text-primary">4.9</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-4 mt-2">
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-[10px] text-slate-400">schedule</span>
+                                                <span class="text-[10px] font-bold text-slate-600">12 min</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-[10px] text-slate-400">payments</span>
+                                                <span class="text-[10px] font-bold text-slate-600">₹199/hr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-primary text-white py-2.5 rounded-xl text-[10px] font-black tracking-widest uppercase hover:bg-primary/90 active:scale-95 transition-all">Book Now</button>
+                            </div>
+                            <!-- Worker Card 2 -->
+                            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm opacity-90">
+                                <div class="flex gap-4 mb-4">
+                                    <img alt="Vikram Singh" class="w-12 h-12 rounded-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACDPU4py4GEHJ41Dr29VsF4M985WvMdTXQo-ZAy8NWGl2_jPp_J_qW4nWCY5CbIhlzacjl_NxfrCq79fXW-DMw5vKr0CWHKZY3oSW5khJlBGJCQEtbdlu0cPdcBBGqttkEi_rNYkpt226Od6lXuUpF4J5RfZwWwCXzpLtB3OMQ-gyI0yMPoBoj53gsE_9T5VIQsTlHvDPEmaEJY_-v1hZo5aRauqQnGClU7IbNbnzBHwQjAI3d7IyyJXijh8IoAv8PQW60SGPtsDup"/>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-xs font-black text-primary">Vikram Singh</h4>
+                                                <p class="text-[10px] text-slate-500 font-bold uppercase">Emergency Repairs</p>
+                                            </div>
+                                            <div class="bg-slate-100 px-2 py-1 rounded-md flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-[10px] text-slate-500" style="font-variation-settings: 'FILL' 1;">star</span>
+                                                <span class="text-[10px] font-black text-slate-500">4.7</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-slate-800 text-white py-2.5 rounded-xl text-[10px] font-black tracking-widest uppercase active:scale-95 transition-all">Book Now</button>
+                            </div>
+                        </div>
+                        <!-- Bottom Nav -->
+                        <div class="absolute bottom-0 w-full bg-white border-t flex justify-around p-3">
+                            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">home</span>
+                            <span class="material-symbols-outlined text-slate-300">calendar_today</span>
+                            <span class="material-symbols-outlined text-slate-300">chat</span>
+                            <span class="material-symbols-outlined text-slate-300">person</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 space-y-10 order-1 md:order-2">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Engineered for Transparency</h2>
+                <div class="space-y-8">
+                    <div class="flex gap-6 group">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-white">location_on</span>
+                        </div>
+                        <div>
+                            <h4 class="font-title-lg text-primary">Live Tracking</h4>
+                            <p class="text-on-surface-variant">See exactly when your Karigar will arrive with real-time GPS tracking within the app.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-white">chat</span>
+                        </div>
+                        <div>
+                            <h4 class="font-title-lg text-primary">In-App Chat</h4>
+                            <p class="text-on-surface-variant">Communicate securely with your technician without sharing your personal phone number.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-white">receipt_long</span>
+                        </div>
+                        <div>
+                            <h4 class="font-title-lg text-primary">Digital Invoicing</h4>
+                            <p class="text-on-surface-variant">Instant, transparent billing and easy online payment options directly in the app dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonials -->
+    <section class="py-section-gap-desktop bg-surface-container-low">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+            <h2 class="font-headline-lg text-headline-lg text-primary text-center mb-16">Trusted by Thousands</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-xl border border-outline-variant flex flex-col">
+                    <div class="flex text-primary mb-4">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                    <p class="text-on-surface font-body-md italic mb-8 flex-grow">"The electrician arrived in 20 minutes and fixed a recurring short circuit problem that other local guys couldn't solve. Highly professional and clean work."</p>
+                    <div class="pt-6 border-t border-outline-variant">
+                        <p class="font-bold text-primary">Arjun Mehta</p>
+                        <p class="text-on-surface-variant text-label-md">Gurgaon, Sector 56</p>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-xl border border-outline-variant flex flex-col">
+                    <div class="flex text-primary mb-4">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                    <p class="text-on-surface font-body-md italic mb-8 flex-grow">"Excellent cleaning service. They were thorough and used professional grade tools. The booking process was seamless and the price was exactly as quoted."</p>
+                    <div class="pt-6 border-t border-outline-variant">
+                        <p class="font-bold text-primary">Priya Sharma</p>
+                        <p class="text-on-surface-variant text-label-md">Indiranagar, Bangalore</p>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-8 rounded-xl border border-outline-variant flex flex-col">
+                    <div class="flex text-primary mb-4">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">star</span>
+                    </div>
+                    <p class="text-on-surface font-body-md italic mb-8 flex-grow">"Found a great plumber on short notice for a kitchen leak. The app verification gave me peace of mind about letting someone into my home."</p>
+                    <div class="pt-6 border-t border-outline-variant">
+                        <p class="font-bold text-primary">Vikram Roy</p>
+                        <p class="text-on-surface-variant text-label-md">Salt Lake City, Kolkata</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Final CTA Banner -->
+    <section class="py-section-gap-desktop bg-surface">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+            <div class="bg-primary-container rounded-[32px] p-12 md:p-24 text-center text-on-primary relative overflow-hidden">
+                <div class="blueprint-grid absolute inset-0 opacity-10"></div>
+                <div class="relative z-10 space-y-8">
+                    <h2 class="font-display-lg text-display-lg">Ready to fix your home?</h2>
+                    <p class="font-body-lg opacity-80 max-w-2xl mx-auto">Join 1 million+ happy customers who trust Quick Karigar for their maintenance needs. Download the app today.</p>
+                    <div class="flex justify-center">
+                        <a href="/download-apk">
+                            <button class="bg-white text-primary px-10 py-5 rounded-2xl font-extrabold flex items-center gap-3 shadow-2xl hover:bg-surface-bright transition-all group active:scale-95">
+                                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                GET IT ON GOOGLE PLAY
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Footer -->
+<footer class="bg-tertiary text-on-tertiary border-t border-on-tertiary-fixed-variant">
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-16 flex flex-col md:flex-row justify-between gap-gutter">
+        <div class="space-y-6 max-w-xs">
+            <div class="font-headline-lg text-headline-lg font-extrabold text-on-tertiary">Quick Karigar</div>
+            <p class="font-body-md opacity-70">Engineered for precision and home maintenance excellence. The gold standard for verified local services.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div>
+                <h5 class="font-label-md text-label-md mb-6 uppercase tracking-widest text-on-tertiary/50">Services</h5>
+                <ul class="space-y-4 font-body-md">
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Electrician</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Plumbing</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Cleaning</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">All Services</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-label-md text-label-md mb-6 uppercase tracking-widest text-on-tertiary/50">Company</h5>
+                <ul class="space-y-4 font-body-md">
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">About Us</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Safety</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Support</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Partner Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-label-md text-label-md mb-6 uppercase tracking-widest text-on-tertiary/50">Legal</h5>
+                <ul class="space-y-4 font-body-md">
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Privacy</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Terms</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Safety Policy</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-</section>
-
-<!-- SERVICES -->
-
-<section class="py-16 md:py-24 bg-gray-50">
-
-    <div class="container-responsive">
-
-        <div class="mb-12 text-center">
-
-            <h2 class="section-title font-extrabold text-indigo-950 mb-4">
-                Popular Services
-            </h2>
-
-            <p class="text-gray-600">
-                Professional experts for every home need.
-            </p>
-
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <!-- CARD -->
-
-            <div class="service-card-hover bg-white p-6 rounded-2xl border">
-
-                <div
-                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
-
-                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
-                            electrical_services
-                        </span>
-
-                </div>
-
-                <h3 class="text-xl font-bold mb-2">
-                    Electrician
-                </h3>
-
-                <p class="text-gray-500">
-                    Starts at ₹199
-                </p>
-
-            </div>
-
-            <div class="service-card-hover bg-white p-6 rounded-2xl border">
-
-                <div
-                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
-
-                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
-                            plumbing
-                        </span>
-
-                </div>
-
-                <h3 class="text-xl font-bold mb-2">
-                    Plumbing
-                </h3>
-
-                <p class="text-gray-500">
-                    Starts at ₹249
-                </p>
-
-            </div>
-
-            <div class="service-card-hover bg-white p-6 rounded-2xl border">
-
-                <div
-                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
-
-                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
-                            carpenter
-                        </span>
-
-                </div>
-
-                <h3 class="text-xl font-bold mb-2">
-                    Carpenter
-                </h3>
-
-                <p class="text-gray-500">
-                    Starts at ₹299
-                </p>
-
-            </div>
-
-            <div class="service-card-hover bg-white p-6 rounded-2xl border">
-
-                <div
-                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
-
-                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
-                            cleaning_services
-                        </span>
-
-                </div>
-
-                <h3 class="text-xl font-bold mb-2">
-                    Home Cleaning
-                </h3>
-
-                <p class="text-gray-500">
-                    Starts at ₹499
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- WHY US -->
-
-<section class="py-16 md:py-24 bg-white">
-
-    <div class="container-responsive">
-
-        <div class="text-center mb-16">
-
-            <h2 class="section-title font-extrabold text-indigo-950">
-                Why Choose Quick Karigar
-            </h2>
-
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-
-            <div class="flex gap-5">
-
-                    <span class="material-symbols-outlined text-indigo-900 text-5xl">
-                        verified_user
-                    </span>
-
-                <div>
-
-                    <h3 class="text-xl font-bold mb-2">
-                        Verified Professionals
-                    </h3>
-
-                    <p class="text-gray-600">
-                        All technicians are background verified.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="flex gap-5">
-
-                    <span class="material-symbols-outlined text-indigo-900 text-5xl">
-                        bolt
-                    </span>
-
-                <div>
-
-                    <h3 class="text-xl font-bold mb-2">
-                        Fast Booking
-                    </h3>
-
-                    <p class="text-gray-600">
-                        Book professionals within minutes.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="flex gap-5">
-
-                    <span class="material-symbols-outlined text-indigo-900 text-5xl">
-                        payments
-                    </span>
-
-                <div>
-
-                    <h3 class="text-xl font-bold mb-2">
-                        Affordable Pricing
-                    </h3>
-
-                    <p class="text-gray-600">
-                        Transparent pricing without hidden charges.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- HOW IT WORKS -->
-
-<section class="py-16 md:py-24 bg-indigo-950 text-white">
-
-    <div class="container-responsive">
-
-        <div class="text-center mb-16">
-
-            <h2 class="section-title font-extrabold">
-                How It Works
-            </h2>
-
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-
-            <div class="text-center">
-
-                <div
-                        class="w-20 h-20 bg-white text-indigo-950 rounded-full flex items-center justify-center text-3xl font-extrabold mx-auto mb-6">
-                    1
-                </div>
-
-                <h3 class="text-2xl font-bold mb-3">
-                    Choose Service
-                </h3>
-
-                <p class="text-gray-300">
-                    Select any service you need.
-                </p>
-
-            </div>
-
-            <div class="text-center">
-
-                <div
-                        class="w-20 h-20 bg-white text-indigo-950 rounded-full flex items-center justify-center text-3xl font-extrabold mx-auto mb-6">
-                    2
-                </div>
-
-                <h3 class="text-2xl font-bold mb-3">
-                    Book Professional
-                </h3>
-
-                <p class="text-gray-300">
-                    Schedule your preferred time.
-                </p>
-
-            </div>
-
-            <div class="text-center">
-
-                <div
-                        class="w-20 h-20 bg-white text-indigo-950 rounded-full flex items-center justify-center text-3xl font-extrabold mx-auto mb-6">
-                    3
-                </div>
-
-                <h3 class="text-2xl font-bold mb-3">
-                    Get Work Done
-                </h3>
-
-                <p class="text-gray-300">
-                    Relax while experts handle the job.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- CTA -->
-
-<section class="py-20 bg-white">
-
-    <div class="container-responsive">
-
-        <div
-                class="bg-indigo-950 rounded-[40px] p-10 md:p-20 text-center text-white relative overflow-hidden">
-
-            <div class="blueprint-grid absolute inset-0 opacity-20"></div>
-
-            <div class="relative z-10">
-
-                <h2 class="hero-title font-extrabold mb-6">
-                    Ready to Fix Your Home?
-                </h2>
-
-                <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-10">
-                    Join thousands of happy customers using Quick Karigar.
-                </p>
-
-                <button
-                        class="bg-white text-indigo-950 px-10 py-5 rounded-2xl font-extrabold hover:scale-105 transition">
-
-                    Download App
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- FOOTER -->
-
-<footer class="bg-gray-950 text-white py-16">
-
-    <div
-            class="container-responsive grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
-        <div>
-
-            <h2 class="text-3xl font-extrabold mb-5">
-                Quick Karigar
-            </h2>
-
-            <p class="text-gray-400">
-                Trusted local service marketplace for India.
-            </p>
-
-        </div>
-
-        <div>
-
-            <h3 class="font-bold mb-5 text-lg">
-                Services
-            </h3>
-
-            <ul class="space-y-3 text-gray-400">
-
-                <li>Electrician</li>
-                <li>Plumber</li>
-                <li>Cleaning</li>
-                <li>Painting</li>
-
-            </ul>
-
-        </div>
-
-        <div>
-
-            <h3 class="font-bold mb-5 text-lg">
-                Company
-            </h3>
-
-            <ul class="space-y-3 text-gray-400">
-
-                <li>About</li>
-                <li>Support</li>
-                <li>Careers</li>
-                <li>Contact</li>
-
-            </ul>
-
-        </div>
-
-        <div>
-
-            <h3 class="font-bold mb-5 text-lg">
-                Legal
-            </h3>
-
-            <ul class="space-y-3 text-gray-400">
-
-                <li>Privacy Policy</li>
-                <li>Terms</li>
-                <li>Refund Policy</li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-    <div class="container-responsive mt-14 pt-8 border-t border-gray-800">
-
-        <p class="text-gray-500 text-center">
-            © 2026 Quick Karigar. All Rights Reserved.
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 border-t border-white/10 text-center md:text-left">
+        <p class="font-label-sm text-label-sm text-tertiary-fixed-dim">
+            © <span id="year"></span> Quick Karigar. Engineered for precision and home maintenance excellence.
         </p>
-
     </div>
-
 </footer>
+<script>
+    // Micro-interactions for buttons
+    document.querySelectorAll('.active\\:scale-95').forEach(button => {
+        button.addEventListener('mousedown', () => {
+            button.style.transform = 'scale(0.95)';
+        });
+        button.addEventListener('mouseup', () => {
+            button.style.transform = 'scale(1)';
+        });
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'scale(1)';
+        });
+    });
 
-<!-- MOBILE DOWNLOAD BUTTON -->
 
-<div class="fixed bottom-4 left-4 right-4 z-50 md:hidden">
-
-    <button
-            class="w-full bg-indigo-950 text-white py-4 rounded-2xl font-bold shadow-2xl">
-
-        Download Quick Karigar
-
-    </button>
-
-</div>
-
-</body>
-
-</html>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body></html>
