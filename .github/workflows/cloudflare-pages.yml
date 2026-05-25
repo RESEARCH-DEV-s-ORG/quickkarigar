@@ -12,15 +12,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: web-user-app
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -28,15 +24,16 @@ jobs:
           cache-dependency-path: web-user-app/package-lock.json
 
       - name: Install dependencies
+        working-directory: web-user-app
         run: npm ci
 
-      - name: Build project
+      - name: Build Vite app
+        working-directory: web-user-app
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=quickkarigar-web
-          workingDirectory: web-user-app
+          command: pages deploy web-user-app/dist --project-name=quickkarigar-web
