@@ -2,6 +2,14 @@ const express = require('express');
 
 const router = express.Router();
 
+const authRoutes =
+    require('./authRoutes');
+
+router.use(
+    '/auth',
+    authRoutes
+);
+
 // TEST ROUTE
 router.get('/', (req, res) => {
 
@@ -10,6 +18,8 @@ router.get('/', (req, res) => {
         message: 'QuickKarigar API Working'
     });
 });
+
+
 
 // HEALTH CHECK
 router.get('/health', (req, res) => {

@@ -42,6 +42,7 @@ app.use((req, res, next) => {
 });
 // ROUTES
 app.use('/api', apiRoutes);
+
 // SOCKET EVENTS
 chatSocket(io);
 

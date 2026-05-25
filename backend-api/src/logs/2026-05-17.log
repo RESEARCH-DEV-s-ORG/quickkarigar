@@ -7,3 +7,9 @@
 [17/05/2026, 06:16:55 pm] [INFO] GET /api
 [17/05/2026, 06:17:04 pm] [INFO] GET /api/health
 [17/05/2026, 06:17:11 pm] [INFO] GET /api/users
+[17/05/2026, 06:50:59 pm] [SUCCESS] Server running on http://localhost:8000
+[17/05/2026, 06:51:05 pm] [DATABASE] MongoDB Connected
+[17/05/2026, 07:34:59 pm] [SUCCESS] Server running on http://localhost:8000
+[17/05/2026, 07:35:04 pm] [DATABASE] MongoDB Connected
+[17/05/2026, 07:37:20 pm] [SUCCESS] Server running on http://localhost:8000
+[17/05/2026, 07:37:25 pm] [DATABASE] MongoDB Connected

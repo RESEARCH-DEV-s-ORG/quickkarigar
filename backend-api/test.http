@@ -115,3 +115,19 @@ GET {{baseUrl}}/api/unknown
 Content-Type: application/json
 
 ###
+POST https://control.msg91.com/api/v5/flow HTTP/1.1
+Host: control.msg91.com
+accept: application/json
+authkey: 517498ASt87Me96a09e34dP1
+content-type: application/json
+
+{
+  "template_id": "6a09df88e21d88d5d4093f93",
+  "short_url": "0",
+  "recipients": [
+    {
+      "mobiles": "918391051546",
+      "opt": "123458"
+    }
+  ]
+}
