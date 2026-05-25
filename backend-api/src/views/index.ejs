@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>Quick Karigar | Professional Home Services</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <style>
+        * {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .blueprint-grid {
+            background-image:
+                    radial-gradient(circle, rgba(26, 35, 126, 0.08) 1px, transparent 1px);
+
+            background-size: 30px 30px;
+        }
+
+        .service-card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .service-card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                    0 20px 25px -5px rgba(0, 0, 0, 0.08),
+                    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .container-responsive {
+            width: 100%;
+            max-width: 1280px;
+            margin: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media(min-width:768px) {
+            .container-responsive {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        @media(min-width:1280px) {
+            .container-responsive {
+                padding-left: 5rem;
+                padding-right: 5rem;
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            line-height: 1.1;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+
+<!-- NAVBAR -->
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b">
+
+    <div class="container-responsive h-20 flex items-center justify-between">
+
+        <div class="text-2xl font-extrabold text-indigo-900">
+            Quick Karigar
+        </div>
+
+        <div class="hidden lg:flex items-center gap-8 font-semibold">
+
+            <a href="#" class="text-indigo-900">Home</a>
+            <a href="#">Services</a>
+            <a href="#">About</a>
+            <a href="#">Partners</a>
+            <a href="#">Contact</a>
+
+        </div>
+
+        <div class="flex items-center gap-4">
+
+            <button class="hidden md:block font-semibold">
+                Login
+            </button>
+
+            <button
+                    class="bg-indigo-900 text-white px-5 py-3 rounded-xl font-bold hover:scale-105 transition">
+                Download App
+            </button>
+
+            <button class="lg:hidden">
+                    <span class="material-symbols-outlined text-3xl">
+                        menu
+                    </span>
+            </button>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="relative pt-32 pb-20 lg:pb-32 overflow-hidden bg-white">
+
+    <div class="blueprint-grid absolute inset-0"></div>
+
+    <div
+            class="container-responsive relative z-10 flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
+
+        <!-- LEFT -->
+
+        <div class="flex-1 text-center lg:text-left">
+
+            <div
+                    class="inline-flex items-center gap-2 bg-indigo-100 text-indigo-900 px-4 py-2 rounded-full text-sm font-bold mb-6">
+
+                <div class="w-2 h-2 rounded-full bg-indigo-900 animate-pulse"></div>
+
+                50,000+ VERIFIED PROFESSIONALS
+
+            </div>
+
+            <h1 class="hero-title font-extrabold text-indigo-950 mb-6">
+                Book Trusted Local Services Instantly
+            </h1>
+
+            <p class="hero-subtitle text-gray-600 max-w-xl mx-auto lg:mx-0 mb-8">
+                Find trusted electricians, plumbers, cleaners, AC technicians,
+                carpenters and more near you with Quick Karigar.
+            </p>
+
+            <div
+                    class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+
+                <button
+                        class="bg-indigo-900 text-white px-7 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-105 transition">
+
+                        <span class="material-symbols-outlined">
+                            download
+                        </span>
+
+                    Download For Android
+
+                </button>
+
+                <button
+                        class="border border-gray-300 bg-white px-7 py-4 rounded-2xl font-bold hover:bg-gray-100 transition">
+
+                    Learn More
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="flex-1 flex justify-center">
+
+            <div class="relative">
+
+                <div
+                        class="absolute inset-0 bg-indigo-300 blur-3xl opacity-30 rounded-full">
+                </div>
+
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn0-f6RpeTRR--27trLS3IhpTrlWrbISSTxY0R3_Vt-977NWaMOuDvrqhjUh7Iyiq-N6Q25tPX0cIr_nrsOypLDeJvyh9E-oaqn55zsKBj4cAa7fLxcvc6lbirdbfZUc4kGaCiBM2h3m361JQb8fzp3YsfzuButvjttoSpY82lTK3U5CvOokuZS9WxevOCffN7wLv0Ozy57n25KJtqCWJ4JV6C14zCjQKR6SRR-Slsax5MM8HU1DXfO1-4xVwu8-JfEJd0kBp2suzF"
+                     class="relative z-10 w-[220px] sm:w-[280px] lg:w-[340px] rounded-[40px] shadow-2xl border-8 border-white"
+                     alt="Quick Karigar App" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SERVICES -->
+
+<section class="py-16 md:py-24 bg-gray-50">
+
+    <div class="container-responsive">
+
+        <div class="mb-12 text-center">
+
+            <h2 class="section-title font-extrabold text-indigo-950 mb-4">
+                Popular Services
+            </h2>
+
+            <p class="text-gray-600">
+                Professional experts for every home need.
+            </p>
+
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- CARD -->
+
+            <div class="service-card-hover bg-white p-6 rounded-2xl border">
+
+                <div
+                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
+
+                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
+                            electrical_services
+                        </span>
+
+                </div>
+
+                <h3 class="text-xl font-bold mb-2">
+                    Electrician
+                </h3>
+
+                <p class="text-gray-500">
+                    Starts at ₹199
+                </p>
+
+            </div>
+
+            <div class="service-card-hover bg-white p-6 rounded-2xl border">
+
+                <div
+                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
+
+                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
+                            plumbing
+                        </span>
+
+                </div>
+
+                <h3 class="text-xl font-bold mb-2">
+                    Plumbing
+                </h3>
+
+                <p class="text-gray-500">
+                    Starts at ₹249
+                </p>
+
+            </div>
+
+            <div class="service-card-hover bg-white p-6 rounded-2xl border">
+
+                <div
+                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
+
+                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
+                            carpenter
+                        </span>
+
+                </div>
+
+                <h3 class="text-xl font-bold mb-2">
+                    Carpenter
+                </h3>
+
+                <p class="text-gray-500">
+                    Starts at ₹299
+                </p>
+
+            </div>
+
+            <div class="service-card-hover bg-white p-6 rounded-2xl border">
+
+                <div
+                        class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
+
+                        <span class="material-symbols-outlined text-indigo-900 text-4xl">
+                            cleaning_services
+                        </span>
+
+                </div>
+
+                <h3 class="text-xl font-bold mb-2">
+                    Home Cleaning
+                </h3>
+
+                <p class="text-gray-500">
+                    Starts at ₹499
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- WHY US -->
+
+<section class="py-16 md:py-24 bg-white">
+
+    <div class="container-responsive">
+
+        <div class="text-center mb-16">
+
+            <h2 class="section-title font-extrabold text-indigo-950">
+                Why Choose Quick Karigar
+            </h2>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+            <div class="flex gap-5">
+
+                    <span class="material-symbols-outlined text-indigo-900 text-5xl">
+                        verified_user
+                    </span>
+
+                <div>
+
+                    <h3 class="text-xl font-bold mb-2">
+                        Verified Professionals
+                    </h3>
+
+                    <p class="text-gray-600">
+                        All technicians are background verified.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="flex gap-5">
+
+                    <span class="material-symbols-outlined text-indigo-900 text-5xl">
+                        bolt
+                    </span>
+
+                <div>
+
+                    <h3 class="text-xl font-bold mb-2">
+                        Fast Booking
+                    </h3>
+
+                    <p class="text-gray-600">
+                        Book professionals within minutes.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="flex gap-5">
+
+                    <span class="material-symbols-outlined text-indigo-900 text-5xl">
+                        payments
+                    </span>
+
+                <div>
+
+                    <h3 class="text-xl font-bold mb-2">
+                        Affordable Pricing
+                    </h3>
+
+                    <p class="text-gray-600">
+                        Transparent pricing without hidden charges.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section class="py-16 md:py-24 bg-indigo-950 text-white">
+
+    <div class="container-responsive">
+
+        <div class="text-center mb-16">
+
+            <h2 class="section-title font-extrabold">
+                How It Works
+            </h2>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+            <div class="text-center">
+
+                <div
+                        class="w-20 h-20 bg-white text-indigo-950 rounded-full flex items-center justify-center text-3xl font-extrabold mx-auto mb-6">
+                    1
+                </div>
+
+                <h3 class="text-2xl font-bold mb-3">
+                    Choose Service
+                </h3>
+
+                <p class="text-gray-300">
+                    Select any service you need.
+                </p>
+
+            </div>
+
+            <div class="text-center">
+
+                <div
+                        class="w-20 h-20 bg-white text-indigo-950 rounded-full flex items-center justify-center text-3xl font-extrabold mx-auto mb-6">
+                    2
+                </div>
+
+                <h3 class="text-2xl font-bold mb-3">
+                    Book Professional
+                </h3>
+
+                <p class="text-gray-300">
+                    Schedule your preferred time.
+                </p>
+
+            </div>
+
+            <div class="text-center">
+
+                <div
+                        class="w-20 h-20 bg-white text-indigo-950 rounded-full flex items-center justify-center text-3xl font-extrabold mx-auto mb-6">
+                    3
+                </div>
+
+                <h3 class="text-2xl font-bold mb-3">
+                    Get Work Done
+                </h3>
+
+                <p class="text-gray-300">
+                    Relax while experts handle the job.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="py-20 bg-white">
+
+    <div class="container-responsive">
+
+        <div
+                class="bg-indigo-950 rounded-[40px] p-10 md:p-20 text-center text-white relative overflow-hidden">
+
+            <div class="blueprint-grid absolute inset-0 opacity-20"></div>
+
+            <div class="relative z-10">
+
+                <h2 class="hero-title font-extrabold mb-6">
+                    Ready to Fix Your Home?
+                </h2>
+
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-10">
+                    Join thousands of happy customers using Quick Karigar.
+                </p>
+
+                <button
+                        class="bg-white text-indigo-950 px-10 py-5 rounded-2xl font-extrabold hover:scale-105 transition">
+
+                    Download App
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer class="bg-gray-950 text-white py-16">
+
+    <div
+            class="container-responsive grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+        <div>
+
+            <h2 class="text-3xl font-extrabold mb-5">
+                Quick Karigar
+            </h2>
+
+            <p class="text-gray-400">
+                Trusted local service marketplace for India.
+            </p>
+
+        </div>
+
+        <div>
+
+            <h3 class="font-bold mb-5 text-lg">
+                Services
+            </h3>
+
+            <ul class="space-y-3 text-gray-400">
+
+                <li>Electrician</li>
+                <li>Plumber</li>
+                <li>Cleaning</li>
+                <li>Painting</li>
+
+            </ul>
+
+        </div>
+
+        <div>
+
+            <h3 class="font-bold mb-5 text-lg">
+                Company
+            </h3>
+
+            <ul class="space-y-3 text-gray-400">
+
+                <li>About</li>
+                <li>Support</li>
+                <li>Careers</li>
+                <li>Contact</li>
+
+            </ul>
+
+        </div>
+
+        <div>
+
+            <h3 class="font-bold mb-5 text-lg">
+                Legal
+            </h3>
+
+            <ul class="space-y-3 text-gray-400">
+
+                <li>Privacy Policy</li>
+                <li>Terms</li>
+                <li>Refund Policy</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class="container-responsive mt-14 pt-8 border-t border-gray-800">
+
+        <p class="text-gray-500 text-center">
+            © 2026 Quick Karigar. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+<!-- MOBILE DOWNLOAD BUTTON -->
+
+<div class="fixed bottom-4 left-4 right-4 z-50 md:hidden">
+
+    <button
+            class="w-full bg-indigo-950 text-white py-4 rounded-2xl font-bold shadow-2xl">
+
+        Download Quick Karigar
+
+    </button>
+
+</div>
+
+</body>
+
+</html>

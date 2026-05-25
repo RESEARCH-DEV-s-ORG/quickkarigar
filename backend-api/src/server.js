@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const path = require("path");
 const { Server } = require('socket.io');
 const cors = require('cors');
 
@@ -40,22 +41,24 @@ app.use((req, res, next) => {
     );
     next();
 });
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+// Static Folder
+app.use(express.static(path.join(__dirname, "public")));
+
 // ROUTES
 app.use('/api', apiRoutes);
+app.get("/", (req, res) => {
+    res.render("index", {
+        title: "My Landing Page"
+    });
+});
+
 
 // SOCKET EVENTS
 chatSocket(io);
 
-// HEALTH CHECK
-app.get('/', (req, res) => {
-    logger.success(
-        'Health check endpoint accessed'
-    );
-    res.status(200).json({
-        success: true,
-        message: "QuickKarigar Backend API Running"
-    });
-});
 
 // 404 HANDLER
 app.use((req, res) => {
