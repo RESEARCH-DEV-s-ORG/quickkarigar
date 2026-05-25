@@ -59,6 +59,10 @@ app.get("/", (req, res) => {
 // SOCKET EVENTS
 chatSocket(io);
 
+// HEALTH CHECK
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
 
 // 404 HANDLER
 app.use((req, res) => {
