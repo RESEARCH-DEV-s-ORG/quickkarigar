@@ -34,7 +34,6 @@ public class Address {
 
         updateDerivedFields(); // always keep sync
     }
-
     public void updateDerivedFields() {
         this.title = house;
         this.fullAddress = area + ", " + city + " - " + pincode;
