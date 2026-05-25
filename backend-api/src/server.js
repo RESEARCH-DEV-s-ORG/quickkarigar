@@ -54,6 +54,9 @@ app.get("/", (req, res) => {
         title: "My Landing Page"
     });
 });
+app.get("/download", (req, res) => {
+    res.redirect("/");
+});
 
 
 // SOCKET EVENTS
