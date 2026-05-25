@@ -73,6 +73,9 @@ app.get("/download", (req, res) => {
     res.redirect("/");
 });
 
+app.get("/login", (req, res) => {
+    res.redirect("https://web.quickkargar.online/");
+});
 
 // SOCKET EVENTS
 chatSocket(io);
