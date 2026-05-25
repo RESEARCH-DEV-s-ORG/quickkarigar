@@ -1,0 +1,60 @@
+<!-- Footer -->
+<footer class="bg-tertiary text-on-tertiary border-t border-on-tertiary-fixed-variant">
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-16 flex flex-col md:flex-row justify-between gap-gutter">
+        <div class="space-y-6 max-w-xs">
+            <div class="font-headline-lg text-headline-lg font-extrabold text-on-tertiary">Quick Karigar</div>
+            <p class="font-body-md opacity-70">Engineered for precision and home maintenance excellence. The gold standard for verified local services.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div>
+                <h5 class="font-label-md text-label-md mb-6 uppercase tracking-widest text-on-tertiary/50">Services</h5>
+                <ul class="space-y-4 font-body-md">
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Electrician</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Plumbing</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Cleaning</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">All Services</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-label-md text-label-md mb-6 uppercase tracking-widest text-on-tertiary/50">Company</h5>
+                <ul class="space-y-4 font-body-md">
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">About Us</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Safety</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Support</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Partner Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-label-md text-label-md mb-6 uppercase tracking-widest text-on-tertiary/50">Legal</h5>
+                <ul class="space-y-4 font-body-md">
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Privacy</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Terms</a></li>
+                    <li><a class="hover:text-on-tertiary transition-opacity duration-200 text-tertiary-fixed-dim" href="#">Safety Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 border-t border-white/10 text-center md:text-left">
+        <p class="font-label-sm text-label-sm text-tertiary-fixed-dim">
+            © <span id="year"></span> Quick Karigar. Engineered for precision and home maintenance excellence.
+        </p>
+    </div>
+</footer>
+<script>
+    // Micro-interactions for buttons
+    document.querySelectorAll('.active\\:scale-95').forEach(button => {
+        button.addEventListener('mousedown', () => {
+            button.style.transform = 'scale(0.95)';
+        });
+        button.addEventListener('mouseup', () => {
+            button.style.transform = 'scale(1)';
+        });
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'scale(1)';
+        });
+    });
+
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body></html>

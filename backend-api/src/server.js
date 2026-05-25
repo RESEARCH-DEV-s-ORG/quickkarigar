@@ -54,6 +54,21 @@ app.get("/", (req, res) => {
         title: "My Landing Page"
     });
 });
+app.get("/partners", (req, res) => {
+    res.render("pages/partners", {
+        title: "Partner Program"
+    });
+});
+app.get("/about-us", (req, res) => {
+    res.render("pages/aboutus", {
+        title: "Partner Program"
+    });
+});
+app.get("/onboard", (req, res) => {
+    res.render("pages/onboard", {
+        title: "Partner Program"
+    });
+});
 app.get("/download", (req, res) => {
     res.redirect("/");
 });

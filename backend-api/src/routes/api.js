@@ -12,18 +12,14 @@ router.use(
 
 // TEST ROUTE
 router.get('/', (req, res) => {
-
     res.status(200).json({
         success: true,
         message: 'QuickKarigar API Working'
     });
 });
 
-
-
 // HEALTH CHECK
 router.get('/health', (req, res) => {
-
     res.status(200).json({
         status: 'OK',
         uptime: process.uptime(),
