@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import './App.css'
 import {Link, Route, Routes} from "react-router-dom";
+import HomePage from "./pages/Home";
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 
 
 function App() {
@@ -13,7 +16,15 @@ function App() {
           {/*    <Link to="/about">About</Link>*/}
           {/*</nav>*/}
           <Routes>
-              <Route path="/" element={<Login/>} />
+              <Route
+                  path="/"
+                  element={
+                      <ProtectedRoute>
+                          <HomePage />
+                      </ProtectedRoute>
+                  }
+              />
+              <Route path="/login" element={<Login/>} />
               <Route path="*" element={<NotFound />} />
           </Routes>
       </div>

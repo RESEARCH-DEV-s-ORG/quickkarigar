@@ -1,41 +1,112 @@
 import { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 import auth_bg from "../assets/auth_bg.png";
+import { useAuth } from "../context/AuthContext";
+
 
 function Login() {
+    const navigate = useNavigate();
+    const {
+        login,
+    } = useAuth();
 
     const googleLogin = useGoogleLogin({
+
         flow: "implicit",
+
         onSuccess: async (tokenResponse) => {
+
             try {
-                const res = await fetch(
-                    "https://www.googleapis.com/oauth2/v3/userinfo",
+
+                /*
+                    SEND TOKEN
+                    TO BACKEND
+                */
+
+                const response =
+                    await fetch(
+                        "https://quickkargar.online/googleLogin",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+                            },
+
+                            body: JSON.stringify({
+                                token:
+                                tokenResponse.access_token,
+                            }),
+                        }
+                    );
+
+                /*
+                    CONVERT RESPONSE
+                */
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "Backend Response:",
+                    data
+                );
+
+                /*
+                    CHECK SUCCESS
+                */
+
+                if (!data.success) {
+
+                    throw new Error(
+                        data.message
+                    );
+
+                }
+
+                /*
+                    SAVE JWT + USER
+                */
+
+                login(
+                    data.token,
+                    data.user
+                );
+
+                /*
+                    REDIRECT HOME
+                */
+
+                navigate(
+                    "/",
                     {
-                        headers: {
-                            Authorization: `Bearer ${tokenResponse.access_token}`,
-                        },
+                        replace: true,
                     }
                 );
-                const user = await res.json();
-                console.log("Google User:", user);
-                /*
-                    user example:
-                    {
-                      name,
-                      email,
-                      picture,
-                      sub
-                    }
-                */
+
             } catch (err) {
-                console.error(err);
+
+                console.error(
+                    "Google Login Error:",
+                    err
+                );
+
             }
 
         },
+
         onError: () => {
-            console.log("Google Login Failed");
+
+            console.log(
+                "Google Login Failed"
+            );
+
         },
+
     });
+
 
     const handleGoogleLogin = () => {
         googleLogin();
@@ -598,15 +669,10 @@ function Login() {
                                 </div>
 
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     );
 }
