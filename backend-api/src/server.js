@@ -29,73 +29,28 @@ const io = new Server(server, {
 // DATABASE
 connectDB();
 // MIDDLEWARE
-
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://quickkargar.online/",
-    "https://web.quickkargar.online/",
-
+    "https://quickkargar.online",
+    "https://web.quickkargar.online",
 ];
+app.use(cors({
+    origin: function (origin, callback) {
 
-app.use(
-    cors({
-        origin: function (
-            origin,
-            callback
-        ) {
-            /*
-                ALLOW POSTMAN
-                MOBILE APPS
-                SERVER REQUESTS
-            */
-            if (!origin) {
-                return callback(
-                    null,
-                    true
-                );
-            }
-            /*
-                CHECK ORIGIN
-            */
+        if (!origin) {
+            return callback(null, true);
+        }
 
-            if (
-                allowedOrigins.includes(
-                    origin
-                )
-            ) {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS Not Allowed"));
+        }
+    },
 
-                callback(
-                    null,
-                    true
-                );
-
-            } else {
-
-                callback(
-                    new Error(
-                        "CORS Not Allowed"
-                    )
-                );
-
-            }
-
-        },
-        credentials: true,
-        methods: [
-            "GET",
-            "POST",
-            "PUT",
-            "PATCH",
-            "DELETE",
-            "OPTIONS",
-        ],
-        allowedHeaders: [
-            "Content-Type",
-            "Authorization",
-        ],
-    })
-);
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
