@@ -12,97 +12,44 @@ function Login() {
     } = useAuth();
 
     const googleLogin = useGoogleLogin({
-
-        flow: "implicit",
-
+        flow: "auth-code",
         onSuccess: async (tokenResponse) => {
-
             try {
-
-                /*
-                    SEND TOKEN
-                    TO BACKEND
-                */
-
-                const response =
-                    await fetch(
-                        "https://quickkargar.online/api/auth/googleLogin",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json",
-                            },
-
-                            body: JSON.stringify({
-                                token:
-                                tokenResponse.access_token,
-                            }),
-                        }
-                    );
-
-                /*
-                    CONVERT RESPONSE
-                */
-
-                const data =
-                    await response.json();
-
-                console.log(
-                    "Backend Response:",
-                    data
-                );
-
-                /*
-                    CHECK SUCCESS
-                */
-
-                if (!data.success) {
-
-                    throw new Error(
-                        data.message
-                    );
-
-                }
-
-                /*
-                    SAVE JWT + USER
-                */
-
-                login(
-                    data.token,
-                    data.user
-                );
-
-                /*
-                    REDIRECT HOME
-                */
-
-                navigate(
-                    "/",
+                const response = await fetch(
+                    "https://quickkargar.online/api/auth/googleLogin",
                     {
-                        replace: true,
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            code: tokenResponse.code,
+                        }),
                     }
                 );
 
+                const data = await response.json();
+                console.log("Backend Response:", data);
+                if (!data.success) {
+                    throw new Error(data.message);
+                }
+                login(data.token, data.user);
+                navigate("/", {
+                    replace: true,
+                });
             } catch (err) {
-
                 console.error(
                     "Google Login Error:",
                     err
                 );
-
             }
 
         },
-
         onError: () => {
-
             console.log(
                 "Google Login Failed"
             );
-
         },
 
     });
