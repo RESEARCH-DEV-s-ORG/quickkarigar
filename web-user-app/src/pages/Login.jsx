@@ -1,9 +1,60 @@
+import { useState } from "react";
+import { useGoogleLogin } from "@react-oauth/google";
 import auth_bg from "../assets/auth_bg.png";
 
 function Login() {
+
+    const googleLogin = useGoogleLogin({
+        flow: "implicit",
+        onSuccess: async (tokenResponse) => {
+            try {
+                const res = await fetch(
+                    "https://www.googleapis.com/oauth2/v3/userinfo",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${tokenResponse.access_token}`,
+                        },
+                    }
+                );
+                const user = await res.json();
+                console.log("Google User:", user);
+                /*
+                    user example:
+                    {
+                      name,
+                      email,
+                      picture,
+                      sub
+                    }
+                */
+            } catch (err) {
+                console.error(err);
+            }
+
+        },
+        onError: () => {
+            console.log("Google Login Failed");
+        },
+    });
+
+    const handleGoogleLogin = () => {
+        googleLogin();
+    };
+
+    const handlePhoneLogin = () => {
+        console.log("Phone Login Clicked");
+    };
+
+    const handleEmailLogin = () => {
+        console.log("Email Login Clicked");
+    };
+
+    const handleSignup = () => {
+        console.log("Signup Clicked");
+    };
+
     return (
         <div className="min-h-screen bg-[#eef1f7]">
-
             <div className="min-h-screen flex items-center justify-center lg:p-8">
 
                 {/* MAIN CONTAINER */}
@@ -364,7 +415,9 @@ function Login() {
                             <div className="mt-8 space-y-5">
 
                                 {/* GOOGLE */}
-                                <button className="
+                                <button
+                                    onClick={handleGoogleLogin}
+                                    className="
                                     w-full
                                     h-[62px]
                                     sm:h-[74px]
@@ -416,7 +469,9 @@ function Login() {
                                 </div>
 
                                 {/* PHONE */}
-                                <button className="
+                                <button
+                                    onClick={handlePhoneLogin}
+                                    className="
                                     w-full
                                     h-[62px]
                                     sm:h-[74px]
@@ -452,7 +507,9 @@ function Login() {
                                 </button>
 
                                 {/* EMAIL */}
-                                <button className="
+                                <button
+                                    onClick={handleEmailLogin}
+                                    className="
                                     w-full
                                     h-[62px]
                                     sm:h-[74px]
