@@ -26,7 +26,7 @@ function Login() {
 
                 const response =
                     await fetch(
-                        "https://quickkargar.online/googleLogin",
+                        "https://quickkargar.online/api/auth/googleLogin",
                         {
                             method: "POST",
 
