@@ -11,6 +11,8 @@ import ProfilePage from "./pages/Profile.jsx";
 import ServicesPage from "./pages/Services.jsx";
 import WorkerDetails from "./pages/WorkerDetails.jsx";
 import WorkersPage from "./pages/Workers.jsx";
+import BookingDetailsPage from "./pages/BookingDetailsPage.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
 
 
 
@@ -29,6 +31,8 @@ function App() {
               <Route path="/services" element={<ProtectedRoute><ServicesPage/></ProtectedRoute>} />
               <Route path="/worker/:id" element={<ProtectedRoute><WorkerDetails /></ProtectedRoute>}/>
               <Route path="/workers" element={<ProtectedRoute><WorkersPage /></ProtectedRoute>}/>
+              <Route path="/bookings/:id" element={<ProtectedRoute><BookingDetailsPage /></ProtectedRoute>}/>
+              <Route path="/chat/:chatId" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
               <Route path="/login" element={<Login/>} />
               <Route path="*" element={<NotFound />} />
           </Routes>

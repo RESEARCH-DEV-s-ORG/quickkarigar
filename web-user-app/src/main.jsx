@@ -6,15 +6,20 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import  { AuthProvider } from "./context/AuthContext.jsx";
+import {SocketProvider} from "./context/SocketContext.jsx";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <GoogleOAuthProvider clientId="257200938816-ebtmmdq5anofnqclv4iullh81vnf5mpi.apps.googleusercontent.com">
+        <GoogleOAuthProvider
+            clientId="257200938816-ebtmmdq5anofnqclv4iullh81vnf5mpi.apps.googleusercontent.com"
+        >
             <AuthProvider>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
+                <SocketProvider>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </SocketProvider>
             </AuthProvider>
         </GoogleOAuthProvider>
     </StrictMode>
-)
+);
