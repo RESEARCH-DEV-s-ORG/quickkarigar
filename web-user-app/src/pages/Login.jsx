@@ -1,72 +1,26 @@
-import { useState } from "react";
-import { useGoogleLogin } from "@react-oauth/google";
+import { useState, useRef } from "react";
+import { GoogleLogin , useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import auth_bg from "../assets/auth_bg.png";
 import { useAuth } from "../context/AuthContext";
-
+import { API } from "../config/api.js";
 
 function Login() {
     const navigate = useNavigate();
+
+    const googleBtnRef = useRef(null);
+
     const {
         login,
     } = useAuth();
 
-    const googleLogin = useGoogleLogin({
-        flow: "auth-code",
-        onSuccess: async (tokenResponse) => {
-            try {
-                const response = await fetch(
-                    "https://quickkargar.online/api/auth/googleLogin",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-
-                        body: JSON.stringify({
-                            code: tokenResponse.code,
-                        }),
-                    }
-                );
-
-                const data = await response.json();
-                console.log("Backend Response:", data);
-                if (!data.success) {
-                    throw new Error(data.message);
-                }
-                login(data.token, data.user);
-                navigate("/", {
-                    replace: true,
-                });
-            } catch (err) {
-                console.error(
-                    "Google Login Error:",
-                    err
-                );
-            }
-
-        },
-        onError: () => {
-            console.log(
-                "Google Login Failed"
-            );
-        },
-
-    });
-
-
-    const handleGoogleLogin = () => {
-        googleLogin();
-    };
 
     const handlePhoneLogin = () => {
         console.log("Phone Login Clicked");
     };
-
     const handleEmailLogin = () => {
         console.log("Email Login Clicked");
     };
-
     const handleSignup = () => {
         console.log("Signup Clicked");
     };
@@ -432,42 +386,74 @@ function Login() {
                             {/* BUTTONS */}
                             <div className="mt-8 space-y-5">
 
+
                                 {/* GOOGLE */}
-                                <button
-                                    onClick={handleGoogleLogin}
-                                    className="
-                                    w-full
-                                    h-[62px]
-                                    sm:h-[74px]
+                                <div
+                                    ref={googleBtnRef}
+                                    className="absolute opacity-0 pointer-events-none"
+                                >
+                                    <GoogleLogin
+                                        onSuccess={async (credentialResponse) => {
+                                            try {
+                                                const response = await fetch(API.GOOGLE_LOGIN, {
+                                                    method: "POST",
+                                                    headers: { "Content-Type": "application/json" },
+                                                    body: JSON.stringify({ token: credentialResponse.credential }), // ✅ This IS the id_token
+                                                });
 
-                                    rounded-[20px]
-
-                                    border
-                                    border-[#dddddf]
-                                    bg-white
-
-                                    flex
-                                    items-center
-                                    justify-center
-                                    gap-4
-
-                                    text-[16px]
-                                    sm:text-[17px]
-
-                                    font-medium
-                                    text-[#202124]
-
-                                    hover:bg-[#fafafa]
-                                    transition
-                                ">
-                                    <img
-                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                                        alt="Google"
-                                        className="w-6 h-6"
+                                                const data = await response.json();
+                                                if (data.success) {
+                                                    login(data.token, data.user);
+                                                    navigate("/");
+                                                } else {
+                                                    console.error("Login failed:", data.message);
+                                                }
+                                            } catch (err) {
+                                                console.error(err);
+                                            }
+                                        }}
+                                        onError={() => console.log("Google Login Failed")}
                                     />
+                                </div>
+                                <button
+                                        onClick={() =>
+                                             googleBtnRef.current?.querySelector("div[role='button']")?.click()
+                                        }
+                                        className="
+                                        w-full
+                                        h-[62px]
+                                        sm:h-[74px]
 
-                                    Continue with Google
-                                </button>
+                                        rounded-[20px]
+
+                                        border
+                                        border-[#dddddf]
+                                        bg-white
+
+                                        flex
+                                        items-center
+                                        justify-center
+                                        gap-4
+
+                                        text-[16px]
+                                        sm:text-[17px]
+
+                                        font-medium
+                                        text-[#202124]
+
+                                        hover:bg-[#fafafa]
+                                        transition
+                                    ">
+                                        <img
+                                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                            alt="Google"
+                                            className="w-6 h-6"
+                                        />
+
+                                        Continue with Google
+                                    </button>
+
+
 
                                 {/* DIVIDER */}
                                 <div className="flex items-center gap-4">
