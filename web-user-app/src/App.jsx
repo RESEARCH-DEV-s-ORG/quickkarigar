@@ -8,6 +8,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import BookingPage from "./pages/Booking.jsx";
 import MessagesPage from "./pages/Messages.jsx";
 import ProfilePage from "./pages/Profile.jsx";
+import ServicesPage from "./pages/Services.jsx";
+import WorkerDetails from "./pages/WorkerDetails.jsx";
+import WorkersPage from "./pages/Workers.jsx";
 
 
 
@@ -23,6 +26,9 @@ function App() {
               <Route path="/bookings" element={<ProtectedRoute><BookingPage/></ProtectedRoute>} />
               <Route path="/messages" element={<ProtectedRoute><MessagesPage/></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
+              <Route path="/services" element={<ProtectedRoute><ServicesPage/></ProtectedRoute>} />
+              <Route path="/worker/:id" element={<ProtectedRoute><WorkerDetails /></ProtectedRoute>}/>
+              <Route path="/workers" element={<ProtectedRoute><WorkersPage /></ProtectedRoute>}/>
               <Route path="/login" element={<Login/>} />
               <Route path="*" element={<NotFound />} />
           </Routes>
