@@ -18,6 +18,7 @@ exports.googleLogin =
     async (req, res) => {
         try {
             const { token } = req.body;
+            logger.error("token:" + token);
             if (!token) {
                 return res.status(400).json({
                     success: false,
@@ -55,7 +56,7 @@ exports.googleLogin =
                         authProvider: 'google',
                         role: 'customer'
                     });
-                logger.auth(
+                logger.info(
                     `New Google user registered: ${googleUser.email}`
                 );
 
@@ -65,7 +66,7 @@ exports.googleLogin =
                 user.profilePicture = googleUser.profilePicture;
                 await user.save();
 
-                logger.auth(
+                logger.info(
                     `Google login: ${googleUser.email}`
                 );
             }

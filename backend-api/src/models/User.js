@@ -27,7 +27,8 @@ const userSchema =
         },
         phone: {
             type: String,
-            required: true,
+            required: false,
+            default: null,
             unique: true,
             trim: true
         },
