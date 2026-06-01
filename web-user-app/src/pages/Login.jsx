@@ -8,7 +8,7 @@ import { API } from "../config/api.js";
 function Login() {
     const navigate = useNavigate();
 
-    const googleBtnRef = useRef(null);
+    //const googleBtnRef = useRef(null);
 
     const {
         login,
@@ -388,70 +388,71 @@ function Login() {
 
 
                                 {/* GOOGLE */}
-                                <div
-                                    ref={googleBtnRef}
-                                    className="absolute opacity-0 pointer-events-none"
-                                >
-                                    <GoogleLogin
-                                        onSuccess={async (credentialResponse) => {
-                                            try {
-                                                const response = await fetch(API.GOOGLE_LOGIN, {
-                                                    method: "POST",
-                                                    headers: { "Content-Type": "application/json" },
-                                                    body: JSON.stringify({ token: credentialResponse.credential }), // ✅ This IS the id_token
-                                                });
+                                <GoogleLogin
+                                    onSuccess={async (credentialResponse) => {
+                                        try {
+                                            const response = await fetch(API.GOOGLE_LOGIN, {
+                                                method: "POST",
+                                                headers: { "Content-Type": "application/json" },
+                                                body: JSON.stringify({ token: credentialResponse.credential }), // ✅ This IS the id_token
+                                            });
 
-                                                const data = await response.json();
-                                                if (data.success) {
-                                                    login(data.token, data.user);
-                                                    navigate("/");
-                                                } else {
-                                                    console.error("Login failed:", data.message);
-                                                }
-                                            } catch (err) {
-                                                console.error(err);
+                                            const data = await response.json();
+                                            if (data.success) {
+                                                login(data.token, data.user);
+                                                navigate("/");
+                                            } else {
+                                                console.error("Login failed:", data.message);
                                             }
-                                        }}
-                                        onError={() => console.log("Google Login Failed")}
-                                    />
-                                </div>
-                                <button
-                                        onClick={() =>
-                                             googleBtnRef.current?.querySelector("div[role='button']")?.click()
+                                        } catch (err) {
+                                            console.error(err);
                                         }
-                                        className="
-                                        w-full
-                                        h-[62px]
-                                        sm:h-[74px]
+                                    }}
+                                    onError={() => console.log("Google Login Failed")}
+                                />
+                                {/*<div*/}
+                                {/*    ref={googleBtnRef}*/}
+                                {/*    className="absolute opacity-0 pointer-events-none"*/}
+                                {/*>*/}
+                                {/*    */}
+                                {/*</div>*/}
+                                {/*<button*/}
+                                {/*        onClick={() =>*/}
+                                {/*             googleBtnRef.current?.querySelector("div[role='button']")?.click()*/}
+                                {/*        }*/}
+                                {/*        className="*/}
+                                {/*        w-full*/}
+                                {/*        h-[62px]*/}
+                                {/*        sm:h-[74px]*/}
 
-                                        rounded-[20px]
+                                {/*        rounded-[20px]*/}
 
-                                        border
-                                        border-[#dddddf]
-                                        bg-white
+                                {/*        border*/}
+                                {/*        border-[#dddddf]*/}
+                                {/*        bg-white*/}
 
-                                        flex
-                                        items-center
-                                        justify-center
-                                        gap-4
+                                {/*        flex*/}
+                                {/*        items-center*/}
+                                {/*        justify-center*/}
+                                {/*        gap-4*/}
 
-                                        text-[16px]
-                                        sm:text-[17px]
+                                {/*        text-[16px]*/}
+                                {/*        sm:text-[17px]*/}
 
-                                        font-medium
-                                        text-[#202124]
+                                {/*        font-medium*/}
+                                {/*        text-[#202124]*/}
 
-                                        hover:bg-[#fafafa]
-                                        transition
-                                    ">
-                                        <img
-                                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                                            alt="Google"
-                                            className="w-6 h-6"
-                                        />
+                                {/*        hover:bg-[#fafafa]*/}
+                                {/*        transition*/}
+                                {/*    ">*/}
+                                {/*        <img*/}
+                                {/*            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"*/}
+                                {/*            alt="Google"*/}
+                                {/*            className="w-6 h-6"*/}
+                                {/*        />*/}
 
-                                        Continue with Google
-                                    </button>
+                                {/*        Continue with Google*/}
+                                {/*    </button>*/}
 
 
 
