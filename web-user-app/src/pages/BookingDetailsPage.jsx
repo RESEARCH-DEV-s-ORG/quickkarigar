@@ -21,7 +21,7 @@ import {useEffect, useState} from "react";
 import DashboardLayout from "../components/DashboardNav.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
-export default function BookingDetailsPage() {
+export default function BookingDetailsPage({ worker }) {
     const navigate = useNavigate();
 
     const { state } = useLocation();
@@ -86,7 +86,7 @@ export default function BookingDetailsPage() {
             JSON.stringify(chats)
         );
 
-        navigate("/chat", {
+        navigate(`/chat/${2}`, {
             state: {
                 booking,
             },
@@ -795,7 +795,7 @@ export default function BookingDetailsPage() {
                         font-medium
                     "
                             >
-                                Contact Support
+                                Contact Supportsc
                             </button>
 
                         </div>
