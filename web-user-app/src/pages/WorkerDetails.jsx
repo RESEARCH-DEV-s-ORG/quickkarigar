@@ -10,11 +10,14 @@ import {
     CheckCircle2
 } from "lucide-react";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import DashboardLayout from "../components/DashboardNav.jsx";
 
 export default function WorkerDetails() {
+
+
 
     const { state } = useLocation();
 
@@ -29,6 +32,56 @@ export default function WorkerDetails() {
             </div>
         );
     }
+
+    const navigate = useNavigate();
+
+    const [bookingDate, setBookingDate] = useState("");
+    const [bookingTime, setBookingTime] = useState("");
+    const [address, setAddress] = useState("");
+
+    const bookWorker = () => {
+
+        if (
+            !bookingDate ||
+            !bookingTime ||
+            !address
+        ) {
+            alert("Please fill all details");
+            return;
+        }
+
+        const bookings =
+            JSON.parse(
+                localStorage.getItem("bookings")
+            ) || [];
+
+        const booking = {
+            id: Date.now(),
+            worker: {
+                id: worker.id,
+                name: worker.name,
+                service: worker.service,
+                image: worker.image,
+            },
+            date: bookingDate,
+            time: bookingTime,
+            address,
+            status: "upcoming",
+            createdAt:
+                new Date().toISOString(),
+        };
+
+        bookings.unshift(booking);
+
+        localStorage.setItem(
+            "bookings",
+            JSON.stringify(bookings)
+        );
+
+        alert("Booking Successful");
+
+        navigate("/bookings");
+    };
 
     return (
         <DashboardLayout user={user}>
