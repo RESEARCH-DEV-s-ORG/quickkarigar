@@ -18,7 +18,7 @@ import {
 } from "../context/AuthContext";
 import {DashboardLayout} from "../components/DashboardNav.jsx";
 import HeaderUI from "../components/HeaderUI.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ServicesGrid from "../components/ServicesGrid.jsx";
 import TopRatedWorkers from "../components/TopRatedWorkers.jsx";
 
@@ -29,6 +29,29 @@ function HomePage() {
     const handleSearch = () => {
         console.log(searchValue);
     }
+    const [address, setAddress] = useState("Getting location...");
+
+    const [locationLoading, setLocationLoading] = useState(true);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const lat =
+                    position.coords.latitude;
+                const lon =
+                    position.coords.longitude;
+                const res = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+                );
+                const data =
+                    await res.json();
+                setAddress(
+                    data.display_name
+                );
+            }
+        );
+    }, []);
+
     const [showLocationSheet, setShowLocationSheet] = useState(false);
     const navigate = useNavigate();
     const {user} = useAuth();
@@ -117,7 +140,7 @@ function HomePage() {
     return (
         <DashboardLayout user={user}>
             <HeaderUI
-                location="Heritage Institute of Technology, Anandapur, Mundapara, Kolkata, West Bengal 700107"
+                location={address}
                 notificationCount={5}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
@@ -187,8 +210,18 @@ function HomePage() {
                             },
                         });
                     }}
-                    onViewAll={() => {
-                        navigate("/workers");
+                    onViewAll={(worker) => {
+                        navigate("/experts", {
+                            state: {
+                                service: {
+                                    id: worker.id,
+                                    title: worker.service,
+                                    // experts: worker.service,
+                                    description: worker.description,
+                                    popular: worker.popular,
+                                },
+                            },
+                        });
                     }}
                 />
             </div>

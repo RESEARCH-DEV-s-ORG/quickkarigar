@@ -13,6 +13,7 @@ import WorkerDetails from "./pages/WorkerDetails.jsx";
 import WorkersPage from "./pages/Workers.jsx";
 import BookingDetailsPage from "./pages/BookingDetailsPage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
+import ExpertsPage from "./pages/Experts.jsx";
 
 
 
@@ -33,6 +34,7 @@ function App() {
               <Route path="/workers" element={<ProtectedRoute><WorkersPage /></ProtectedRoute>}/>
               <Route path="/bookings/:id" element={<ProtectedRoute><BookingDetailsPage /></ProtectedRoute>}/>
               <Route path="/chat/:chatId" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
+              <Route path="/experts" element={<ProtectedRoute><ExpertsPage /></ProtectedRoute>}/>
               <Route path="/login" element={<Login/>} />
               <Route path="*" element={<NotFound />} />
           </Routes>

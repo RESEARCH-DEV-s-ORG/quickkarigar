@@ -12,8 +12,11 @@ import {
     MapPin,
     Phone,
     MessageCircle,
-    StarsIcon
+    StarsIcon,
+    Star,
 } from "lucide-react";
+
+import {useEffect, useState} from "react";
 
 import DashboardLayout from "../components/DashboardNav.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -22,10 +25,184 @@ export default function BookingDetailsPage() {
     const navigate = useNavigate();
 
     const { state } = useLocation();
-
     const { user } = useAuth();
 
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [review, setReview] = useState("");
+    const [feedbackSubmitted, setFeedbackSubmitted] =
+        useState(false);
     const booking = state?.booking;
+
+    useEffect(() => {
+        if (
+            booking?.status !==
+            "completed"
+        ) return;
+
+        const savedReview =
+            localStorage.getItem(
+                `booking_review_${booking.id}`
+            );
+
+        if (savedReview) {
+            const data =
+                JSON.parse(savedReview);
+            setRating(data.rating);
+            setReview(data.review);
+            setFeedbackSubmitted(true);
+
+        }
+
+    }, [booking]);
+
+    const callWorker = () => {
+        localStorage.setItem(
+            `last_call_${booking.id}`,
+            JSON.stringify({
+                workerId: booking.worker.id,
+                workerName: booking.worker.name,
+                time: new Date().toISOString(),
+            })
+        );
+
+        alert(`Calling ${booking.worker.name}`);
+    };
+    const chatWorker = () => {
+        const chats =
+            JSON.parse(
+                localStorage.getItem("chat_history")
+            ) || [];
+
+        chats.push({
+            bookingId: booking.id,
+            workerId: booking.worker.id,
+            workerName: booking.worker.name,
+            createdAt: new Date().toISOString(),
+        });
+
+        localStorage.setItem(
+            "chat_history",
+            JSON.stringify(chats)
+        );
+
+        navigate("/chat", {
+            state: {
+                booking,
+            },
+        });
+    };
+    const rescheduleBooking = () => {
+        const bookings =
+            JSON.parse(
+                localStorage.getItem("bookings")
+            ) || [];
+
+        const updated = bookings.map((item) =>
+            item.id === booking.id
+                ? {
+                    ...item,
+                    rescheduled: true,
+                    updatedAt:
+                        new Date().toISOString(),
+                }
+                : item
+        );
+
+        localStorage.setItem(
+            "bookings",
+            JSON.stringify(updated)
+        );
+
+        alert("Booking rescheduled");
+    };
+    const cancelBooking = () => {
+        const confirmCancel =
+            window.confirm(
+                "Are you sure you want to cancel this booking?"
+            );
+
+        if (!confirmCancel) return;
+
+        const bookings =
+            JSON.parse(
+                localStorage.getItem("bookings")
+            ) || [];
+
+        const updated = bookings.map((item) =>
+            item.id === booking.id
+                ? {
+                    ...item,
+                    status: "cancelled",
+                    cancelledAt:
+                        new Date().toISOString(),
+                }
+                : item
+        );
+
+        localStorage.setItem(
+            "bookings",
+            JSON.stringify(updated)
+        );
+
+        alert("Booking cancelled");
+
+        navigate("/bookings");
+    };
+    const submitFeedback = () => {
+        if (!rating) {
+            alert(
+                "Please select a rating"
+            );
+            return;
+        }
+        const data = {
+            rating,
+            review,
+            submittedAt:
+                new Date().toISOString(),
+        };
+        localStorage.setItem(
+            `booking_review_${booking.id}`,
+            JSON.stringify(data)
+        );
+        setFeedbackSubmitted(true);
+    };
+    const removeReview = () => {
+        localStorage.removeItem(
+            `booking_review_${booking.id}`
+        );
+        setRating(0);
+        setReview("");
+        setFeedbackSubmitted(false);
+    };
+    const contactSupport = () => {
+        const tickets =
+            JSON.parse(
+                localStorage.getItem(
+                    "support_tickets"
+                )
+            ) || [];
+
+        tickets.push({
+            id: Date.now(),
+            bookingId: booking.id,
+            workerName:
+            booking.worker.name,
+            status: "open",
+            createdAt:
+                new Date().toISOString(),
+        });
+
+        localStorage.setItem(
+            "support_tickets",
+            JSON.stringify(tickets)
+        );
+
+        alert(
+            "Support ticket created successfully"
+        );
+    };
 
     if (!booking) {
         return (
@@ -95,8 +272,6 @@ export default function BookingDetailsPage() {
 
                     {/* LEFT */}
                     <div className="space-y-5">
-
-                        {/* Worker */}
                         {/* Worker */}
                         <div
                             className="
@@ -355,12 +530,180 @@ export default function BookingDetailsPage() {
 
                         </div>
 
+                        {
+                            booking.status ===
+                            "completed" && (
+
+                                <div
+                                    className="
+        bg-white
+        border
+        border-slate-200
+        rounded-3xl
+        p-5
+    "
+                                >
+
+                                    <h3
+                                        className="
+            text-lg
+            font-bold
+            mb-4
+        "
+                                    >
+                                        Rate Your Experience
+                                    </h3>
+
+                                    <div
+                                        className="
+            flex
+            justify-center
+            gap-2
+        "
+                                    >
+
+                                        {[1,2,3,4,5].map(star => (
+
+                                            <button
+                                                key={star}
+                                                disabled={
+                                                    feedbackSubmitted
+                                                }
+                                                onClick={() =>
+                                                    setRating(star)
+                                                }
+                                                onMouseEnter={() =>
+                                                    setHoverRating(star)
+                                                }
+                                                onMouseLeave={() =>
+                                                    setHoverRating(0)
+                                                }
+                                            >
+
+                                                <Star
+                                                    size={32}
+                                                    fill={
+                                                        star <=
+                                                        (
+                                                            hoverRating ||
+                                                            rating
+                                                        )
+                                                            ? "currentColor"
+                                                            : "none"
+                                                    }
+                                                    className={
+                                                        star <=
+                                                        (
+                                                            hoverRating ||
+                                                            rating
+                                                        )
+                                                            ? "text-amber-400"
+                                                            : "text-slate-300"
+                                                    }
+                                                />
+
+                                            </button>
+
+                                        ))}
+
+                                    </div>
+
+                                    <textarea
+                                        value={review}
+                                        disabled={
+                                            feedbackSubmitted
+                                        }
+                                        onChange={(e) =>
+                                            setReview(
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="
+            Share your experience...
+        "
+                                        className="
+            mt-4
+            w-full
+            h-28
+            rounded-2xl
+            border
+            border-slate-200
+            p-4
+            resize-none
+            outline-none
+        "
+                                    />
+
+                                    {
+                                        feedbackSubmitted ? (
+
+                                            <>
+                                                <div
+                                                    className="
+                        mt-4
+                        bg-green-50
+                        text-green-700
+                        rounded-xl
+                        p-3
+                        text-center
+                        font-medium
+                    "
+                                                >
+                                                    Thank you for your feedback ❤️
+                                                </div>
+
+                                                <button
+                                                    onClick={
+                                                        removeReview
+                                                    }
+                                                    className="
+                        mt-3
+                        w-full
+                        h-11
+                        rounded-xl
+                        border
+                        border-red-200
+                        text-red-600
+                        font-medium
+                    "
+                                                >
+                                                    Delete Review
+                                                </button>
+                                            </>
+
+                                        ) : (
+
+                                            <button
+                                                onClick={
+                                                    submitFeedback
+                                                }
+                                                className="
+                    mt-4
+                    w-full
+                    h-12
+                    rounded-xl
+                    bg-indigo-700
+                    text-white
+                    font-medium
+                "
+                                            >
+                                                Submit Review
+                                            </button>
+
+                                        )
+                                    }
+
+                                </div>
+
+                            )}
+
                         {/* Actions */}
                         <div className="bg-white border border-slate-200 rounded-3xl p-5">
 
                             <div className="grid grid-cols-2 gap-3">
 
                                 <button
+                                    onClick={callWorker}
                                     className="
                             h-12
                             rounded-xl
@@ -378,6 +721,7 @@ export default function BookingDetailsPage() {
                                 </button>
 
                                 <button
+                                    onClick={chatWorker}
                                     className="
                             h-12
                             rounded-xl
@@ -397,6 +741,7 @@ export default function BookingDetailsPage() {
                             </div>
 
                             <button
+                                onClick={rescheduleBooking}
                                 className="
                         mt-3
                         w-full
@@ -411,6 +756,7 @@ export default function BookingDetailsPage() {
                             </button>
 
                             <button
+                                onClick={cancelBooking}
                                 className="
                         mt-3
                         w-full
@@ -438,6 +784,7 @@ export default function BookingDetailsPage() {
                             </p>
 
                             <button
+                                onClick={contactSupport}
                                 className="
                         mt-4
                         w-full
